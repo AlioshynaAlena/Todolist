@@ -1,10 +1,12 @@
-type PropsType = {
+export type PropsType = {
     title: string;
+    changeFilter: () => void;
 }
 
 
-export const Button = ({title}:PropsType) => {
+export const Button = ({title: title, changeFilter: changeFilter}:PropsType) => {
+    
     return (
-        <button>{title}</button>
+        <button onClick={changeFilter}>{title}</button>
     )
 }

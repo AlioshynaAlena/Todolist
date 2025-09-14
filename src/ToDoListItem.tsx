@@ -1,13 +1,18 @@
-import { TaskType } from "./App";
+import { FilterValuesType, TaskType } from "./App";
 import { Button } from "./Button";
 
 type PropsType = {
   title: string;
   tasks: TaskType[];
+  removeTask: (id:number) => void,
+  changeFilter: (value: FilterValuesType) => void
 };
 
 //каждый todolist будет получать свои данные (props)
-export const ToDoListItem = ({tasks: tasks, title: title}: PropsType) => {
+export const ToDoListItem = ({tasks: tasks, title: title, removeTask: removeTask, changeFilter: changeFilter}: PropsType) => {
+
+
+
 
     const tasksList = tasks.length === 0
     ? <span>Ваш список пуск</span>
@@ -17,6 +22,7 @@ export const ToDoListItem = ({tasks: tasks, title: title}: PropsType) => {
       <li key={task.id}>
         <input type="checkbox" checked={task.isDone} /> 
         <span>{task.title}</span>
+        <button onClick={() => {removeTask(task.id)}}>x</button>
       </li>
     );
   })}
@@ -33,9 +39,9 @@ export const ToDoListItem = ({tasks: tasks, title: title}: PropsType) => {
       </div>
       {tasksList}
       <div>
-        <Button title={"All"}/>
-        <Button title={"Active"}/>
-        <Button title={"Completed"}/>
+        <Button title={"All"} changeFilter={() => changeFilter("All")}/>
+        <Button title={"Active"} changeFilter={() => changeFilter("Active")}/>
+        <Button title={"Completed"} changeFilter={() => changeFilter("Completed")}/>
       </div>
     </div>
   );
