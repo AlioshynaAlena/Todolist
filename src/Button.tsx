@@ -4,7 +4,7 @@ export type PropsType = {
 }
 
 
-export const Button = ({title: title, changeFilter: changeFilter}:PropsType) => {
+export const Button = ({title, changeFilter}:PropsType) => {
     
     return (
         <button onClick={changeFilter}>{title}</button>
