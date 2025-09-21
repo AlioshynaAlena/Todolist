@@ -1,15 +1,32 @@
+import { ChangeEvent, useState } from "react";
 import { FilterValuesType, TaskType } from "./App";
 import { Button } from "./Button";
 
 type PropsType = {
   title: string;
   tasks: TaskType[];
-  removeTask: (id:number) => void,
-  changeFilter: (value: FilterValuesType) => void
+  removeTask: (id:string) => void,
+  changeFilter: (value: FilterValuesType) => void,
+  addTask: (title: string) => void,
 };
 
 //каждый todolist будет получать свои данные (props)
-export const ToDoListItem = ({tasks: tasks, title: title, removeTask: removeTask, changeFilter: changeFilter}: PropsType) => {
+export const ToDoListItem = ({tasks, title, removeTask, changeFilter, addTask}: PropsType) => {
+
+  //local state
+  const [newTaskTitle, setNewTaskTitle] = useState('')
+
+
+  //выносим обработчики
+  const onChangeHandler = (e:ChangeEvent<HTMLInputElement>) => {setNewTaskTitle(e.currentTarget.value)}
+  const onKeyPressHandler = (e:React.KeyboardEvent<HTMLInputElement>) => {    
+          if (e.key === 'Enter') {
+            addTask(newTaskTitle);
+            setNewTaskTitle('')
+        }
+  }
+  const onClickButtonHandler = () => {addTask(newTaskTitle);
+        setNewTaskTitle('')}
 
 
 
@@ -34,8 +51,8 @@ export const ToDoListItem = ({tasks: tasks, title: title, removeTask: removeTask
     <div>
       <h3>{title}</h3>
       <div>
-        <input />
-        <button>+</button>
+        <input value={newTaskTitle} onChange={onChangeHandler} onKeyDown={onKeyPressHandler} />
+        <button onClick={onClickButtonHandler}>+</button>
       </div>
       {tasksList}
       <div>

@@ -13,8 +13,10 @@
         "deploy": "gh-pages -d dist"
     },
     "dependencies": {
+        "@types/uuid": "^11.0.0",
         "react": "19.0.0",
-        "react-dom": "19.0.0"
+        "react-dom": "19.0.0",
+        "uuid": "^13.0.0"
     },
     "devDependencies": {
         "@types/react": "19.0.2",
