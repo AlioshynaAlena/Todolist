@@ -25,6 +25,11 @@ function App() {
 
     let taskForToDoList = tasks
 
+  console.log("=== APP DEBUG ===")
+  console.log("Current filter:", filter)
+  console.log("All tasks:", tasks)
+  console.log("Filtered tasks:", taskForToDoList)
+
     if (filter === "Completed") {
         taskForToDoList = tasks.filter((obj) => obj.isDone === true)
     }
@@ -55,11 +60,20 @@ function App() {
   }
 
 
+  function changeStatus(taskId:string, isDone:boolean) {
+    let task = tasks.find( t => t.id === taskId)
+    if (task) {
+      task.isDone = isDone
+    }
+    //заполняем копию теми же данными, которые есть в старом массиве tasks (деструктуризация)
+    setTasks([...tasks])
+  }
+
 
 //UI
   return (
       <div className="app">
-        <ToDoListItem title={toDoListTitle} tasks={taskForToDoList} removeTask={removeTask} changeFilter={changeFilter} addTask = {addTask} />
+        <ToDoListItem title={toDoListTitle} tasks={taskForToDoList} removeTask={removeTask} changeFilter={changeFilter} addTask={addTask} changeStatus={changeStatus} filter={filter}   />
       </div>
   )
 }

@@ -1,12 +1,17 @@
+import { FilterValuesType } from "./App";
+
 export type PropsType = {
-    title: string;
+    title: FilterValuesType;
     changeFilter: () => void;
+    filter: FilterValuesType,
+
 }
 
 
-export const Button = ({title, changeFilter}:PropsType) => {
+export const Button = ({title, changeFilter, filter}:PropsType) => {
     
     return (
-        <button onClick={changeFilter}>{title}</button>
+        <button className={filter === title ? 'active-filter' : ""} 
+        onClick={changeFilter}>{title}</button>
     )
 }
