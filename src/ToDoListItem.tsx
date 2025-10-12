@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from "react";
 import { FilterValuesType, TaskType } from "./App";
 import { Button } from "./Button";
 import { AddItemForm } from "./AddItemForm";
+import { EditableSpan } from "./EditableSpan";
 
 type PropsType = {
   id: string;
@@ -12,8 +13,9 @@ type PropsType = {
   addTask: (title: string, todolistId: string) => void;
   changeStatus: (taskId: string, isDone: boolean, todolistId: string) => void;
   filter: FilterValuesType;
-
   removeToDolist: (todolistId: string) => void;
+  changeTaskTitle: (id: string, newValue: string, todolistId: string) => void,
+  changeToDoListValue: (id: string, newValue: string) => void
 };
 
 //каждый todolist будет получать свои данные (props)
@@ -25,6 +27,8 @@ export const ToDoListItem = ({
   addTask,
   changeStatus,
   removeToDolist,
+  changeTaskTitle,
+  changeToDoListValue,
   filter,
   id,
 }: PropsType) => {
@@ -36,25 +40,21 @@ export const ToDoListItem = ({
     ) : (
       <ul>
         {tasks.map((task) => {
-          const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+          const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
             changeStatus(task.id, e.currentTarget.checked, id);
+          };
+
+          const onChangeTitleHandler = (newValue: string) => {
+            changeTaskTitle(task.id, newValue, id);
           };
 
           return (
             <li key={task.id}>
-              <input
-                type="checkbox"
-                onChange={onChangeHandler}
-                checked={task.isDone}
-              />
-              <span>{task.title}</span>
-              <button
-                onClick={() => {
-                  removeTask(task.id, id);
-                }}
-              >
-                x
-              </button>
+              <input type="checkbox" onChange={onChangeStatusHandler} checked={task.isDone}/>
+
+              <EditableSpan title={task.title} onChange={onChangeTitleHandler} />
+
+              <button onClick={() => {removeTask(task.id, id)}}>x</button>
             </li>
           );
         })}
@@ -65,21 +65,26 @@ export const ToDoListItem = ({
     removeToDolist(id);
   };
 
-
   const addTasks = (title: string) => {
     addTask(title, id)
+  }
+
+  const changeToDoListTitle = (newValue: string) => {
+    changeToDoListValue(id, newValue)
+
   }
 
 
   return (
     <div>
-      <h3>
-        {title} <button onClick={handleRemoveToDoList}>x</button>
+      <h3> <EditableSpan title={title} onChange={changeToDoListTitle} />
+        <button onClick={handleRemoveToDoList}>x</button>
       </h3>
 
       <AddItemForm addItem={addTasks} />
 
       {tasksList}
+
       <div>
         <Button
           title={"All"}
@@ -100,8 +105,6 @@ export const ToDoListItem = ({
     </div>
   );
 };
-
-
 
 
 

@@ -77,6 +77,14 @@ function App() {
     setTasks({ ...tasksObj }); // отдаем копию объекта, чтобы React перересовал
   }
 
+  function changeToDoListValue (id: string, newValue: string) {
+    const todolist = todolists.find(t => t.id === id)
+    if (todolist) {
+      todolist.title = newValue
+      setTodolists([...todolists])
+    }
+  }
+
   //add task
   function addTask(title: string, todolistId: string) {
     let task = { id: v1(), title: title, isDone: false };
@@ -114,6 +122,16 @@ const addToDoList = (title: string) => {
   setTasks({...tasksObj, [todolist.id]: []})
 }
 
+const changeTaskTitle = (taskId: string, newValue: string, todolistId: string) => {
+  let tasks = tasksObj[todolistId];
+    //иммутабельно создаем новое состояние
+    let task = tasks.find((t) => t.id === taskId);
+    if (task) {
+      task.title = newValue
+      setTasks({ ...tasksObj });
+    }
+}
+
 
   //UI
   return (
@@ -147,7 +165,8 @@ const addToDoList = (title: string) => {
             changeStatus={changeStatus}
             filter={tl.filter}
             removeToDolist={removeToDolist}
-          />
+            changeTaskTitle={changeTaskTitle} changeToDoListValue={changeToDoListValue}          
+            />
         );
       })}
     </div>
