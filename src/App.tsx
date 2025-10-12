@@ -19,8 +19,8 @@ export type ToDoListType = {
 };
 
 export type TasksStateType = {
-  [key: string]: TaskType[]
-}
+  [key: string]: TaskType[];
+};
 
 function App() {
   //data
@@ -32,15 +32,6 @@ function App() {
     { id: todolistId1, title: "What to learn ", filter: "All" },
     { id: todolistId2, title: "What to buy ", filter: "All" },
   ]);
-
-  //delete todolist
-  let removeToDolist = (todolistId: string) => {
-    let filteredtodolist = todolists.filter((t) => t.id !== todolistId);
-    setTodolists(filteredtodolist);
-
-    delete tasksObj[todolistId];
-    setTasks({ ...tasksObj });
-  };
 
   //ассоциативный массив
   let [tasksObj, setTasks] = useState<TasksStateType>({
@@ -56,6 +47,14 @@ function App() {
       { id: v1(), title: "Milk", isDone: true },
     ],
   });
+
+  //delete todolist
+  let removeToDolist = (todolistId: string) => {
+    setTodolists(todolists.filter((t) => t.id !== todolistId));
+
+    delete tasksObj[todolistId];
+    setTasks({ ...tasksObj });
+  };
 
   function changeFilter(value: FilterValuesType, todolistId: string) {
     let todolist = todolists.find((t) => t.id === todolistId);
@@ -73,15 +72,16 @@ function App() {
     let filteredTasks = tasks.filter((t) => t.id !== id);
     // по ключу tasksObj[todolistId] обратиться к свойству объекта и заменить в нем на отфильтрованные таски
     tasksObj[todolistId] = filteredTasks;
-
     setTasks({ ...tasksObj }); // отдаем копию объекта, чтобы React перересовал
+    //‼️короче запись
+    // setTasks({...tasksObj, [todolistId]: tasksObj[todolistId].filter((t) => t.id !== id) })
   }
 
-  function changeToDoListValue (id: string, newValue: string) {
-    const todolist = todolists.find(t => t.id === id)
+  function changeToDoListValue(id: string, newValue: string) {
+    const todolist = todolists.find((t) => t.id === id);
     if (todolist) {
-      todolist.title = newValue
-      setTodolists([...todolists])
+      todolist.title = newValue;
+      setTodolists([...todolists]);
     }
   }
 
@@ -94,8 +94,10 @@ function App() {
     let newTasks = [task, ...tasks];
     //вот тебе новые таски
     tasksObj[todolistId] = newTasks;
-
     setTasks({ ...tasksObj });
+
+    // //‼️короче запись
+    // setTasks({ ...tasksObj, [todolistId]: [...tasksObj[todolistId], task] });
   }
 
   function changeStatus(taskId: string, isDone: boolean, todolistId: string) {
@@ -106,37 +108,40 @@ function App() {
     if (task) {
       task.isDone = isDone;
       setTasks({ ...tasksObj });
+
+      // //‼️короче запись
+      // setTasks({
+      //   ...tasksObj,
+      //   [todolistId]: tasksObj[todolistId].map((t) => t.id === taskId ? { ...t, isDone: isDone } : t),
+      // });
     }
     //заполняем копию теми же данными, которые есть в старом массиве tasks (деструктуризация)
     //передаем новое состояние, для обновления его визуализации
   }
 
-
-const addToDoList = (title: string) => {
-  let todolist: ToDoListType = {
-    id: v1(),
-    title: title,
-    filter: 'All'
+  function addToDoList(title: string) {
+    let todolist: ToDoListType = {
+      id: v1(),
+      title: title,
+      filter: "All",
+    };
+    setTodolists([todolist, ...todolists]);
+    setTasks({ ...tasksObj, [todolist.id]: [] });
   }
-  setTodolists([todolist, ...todolists])
-  setTasks({...tasksObj, [todolist.id]: []})
-}
 
-const changeTaskTitle = (taskId: string, newValue: string, todolistId: string) => {
-  let tasks = tasksObj[todolistId];
+  function changeTaskTitle(taskId: string, newValue: string, todolistId: string) {
+    let tasks = tasksObj[todolistId];
     //иммутабельно создаем новое состояние
     let task = tasks.find((t) => t.id === taskId);
     if (task) {
-      task.title = newValue
+      task.title = newValue;
       setTasks({ ...tasksObj });
     }
-}
-
+  }
 
   //UI
   return (
     <div className="app">
-
       <AddItemForm addItem={addToDoList} />
 
       {todolists.map((tl) => {
@@ -165,8 +170,9 @@ const changeTaskTitle = (taskId: string, newValue: string, todolistId: string) =
             changeStatus={changeStatus}
             filter={tl.filter}
             removeToDolist={removeToDolist}
-            changeTaskTitle={changeTaskTitle} changeToDoListValue={changeToDoListValue}          
-            />
+            changeTaskTitle={changeTaskTitle}
+            changeToDoListValue={changeToDoListValue}
+          />
         );
       })}
     </div>
