@@ -18,3 +18,8 @@
 .active-filter {
     background-color: aquamarine;
 }
+
+.container {
+    display: flex;
+    align-items: center;
+}

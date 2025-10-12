@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import { ToDoListItem } from "./ToDoListItem";
 import { v1 } from "uuid";
+import { AddItemForm } from "./AddItemForm";
 
 export type TaskType = {
   id: string;
@@ -17,6 +18,10 @@ export type ToDoListType = {
   filter: FilterValuesType;
 };
 
+export type TasksStateType = {
+  [key: string]: TaskType[]
+}
+
 function App() {
   //data
   //хранит todolists
@@ -24,24 +29,21 @@ function App() {
   let todolistId2 = v1();
 
   let [todolists, setTodolists] = useState<Array<ToDoListType>>([
-    { id: todolistId1, title: "What to learn ", filter: "Active" },
-    { id: todolistId2, title: "What to buy ", filter: "Completed" },
+    { id: todolistId1, title: "What to learn ", filter: "All" },
+    { id: todolistId2, title: "What to buy ", filter: "All" },
   ]);
 
   //delete todolist
-  let removeToDolist = (todolistId:string) => {
-    let filteredtodolist = todolists.filter(t => t.id !== todolistId)
-    setTodolists(filteredtodolist)
+  let removeToDolist = (todolistId: string) => {
+    let filteredtodolist = todolists.filter((t) => t.id !== todolistId);
+    setTodolists(filteredtodolist);
 
-    delete tasksObj[todolistId]
-    setTasks({...tasksObj})
-  }
+    delete tasksObj[todolistId];
+    setTasks({ ...tasksObj });
+  };
 
-
-
-
-  //ассоциатиынфй массив
-  let [tasksObj, setTasks] = useState({
+  //ассоциативный массив
+  let [tasksObj, setTasks] = useState<TasksStateType>({
     [todolistId1]: [
       { id: v1(), title: "HTML&CSS", isDone: true },
       { id: v1(), title: "JS", isDone: true },
@@ -66,7 +68,7 @@ function App() {
 
   //delete task
   function removeTask(id: string, todolistId: string) {
-    //сначала достаем нужный массив
+    //Иммутабельно создаем копию
     let tasks = tasksObj[todolistId];
     let filteredTasks = tasks.filter((t) => t.id !== id);
     // по ключу tasksObj[todolistId] обратиться к свойству объекта и заменить в нем на отфильтрованные таски
@@ -85,25 +87,40 @@ function App() {
     //вот тебе новые таски
     tasksObj[todolistId] = newTasks;
 
-    setTasks({...tasksObj});
+    setTasks({ ...tasksObj });
   }
 
-  function changeStatus(taskId: string, isDone: boolean, todolistId: string ) {
+  function changeStatus(taskId: string, isDone: boolean, todolistId: string) {
     //сначала достаем таски
     let tasks = tasksObj[todolistId];
     //иммутабельно создаем новое состояние
     let task = tasks.find((t) => t.id === taskId);
     if (task) {
       task.isDone = isDone;
-      setTasks({...tasksObj}); 
+      setTasks({ ...tasksObj });
     }
     //заполняем копию теми же данными, которые есть в старом массиве tasks (деструктуризация)
     //передаем новое состояние, для обновления его визуализации
   }
 
+
+const addToDoList = (title: string) => {
+  let todolist: ToDoListType = {
+    id: v1(),
+    title: title,
+    filter: 'All'
+  }
+  setTodolists([todolist, ...todolists])
+  setTasks({...tasksObj, [todolist.id]: []})
+}
+
+
   //UI
   return (
     <div className="app">
+
+      <AddItemForm addItem={addToDoList} />
+
       {todolists.map((tl) => {
         let taskForToDoList = tasksObj[tl.id];
 

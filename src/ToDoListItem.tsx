@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import { FilterValuesType, TaskType } from "./App";
 import { Button } from "./Button";
+import { AddItemForm } from "./AddItemForm";
 
 type PropsType = {
   id: string;
@@ -11,7 +12,8 @@ type PropsType = {
   addTask: (title: string, todolistId: string) => void;
   changeStatus: (taskId: string, isDone: boolean, todolistId: string) => void;
   filter: FilterValuesType;
-  removeToDolist: (todolistId: string) => void
+
+  removeToDolist: (todolistId: string) => void;
 };
 
 //каждый todolist будет получать свои данные (props)
@@ -26,31 +28,6 @@ export const ToDoListItem = ({
   filter,
   id,
 }: PropsType) => {
-  //local state
-  const [newTaskTitle, setNewTaskTitle] = useState("");
-  const [error, setError] = useState<string | null>(null);
-
-  //выносим обработчики
-  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewTaskTitle(e.currentTarget.value);
-  };
-  const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    setError(null);
-
-    if (e.key === "Enter") {
-      addTask(newTaskTitle, id);
-      setNewTaskTitle("");
-    }
-    // setError(null) - можно и здесь
-  };
-  const onClickButtonHandler = () => {
-    if (newTaskTitle.trim() !== "") {
-      addTask(newTaskTitle.trim(), id);
-      setNewTaskTitle("");
-    } else {
-      setError("Field is reguared");
-    }
-  };
 
 
   const tasksList =
@@ -85,8 +62,13 @@ export const ToDoListItem = ({
     );
 
   const handleRemoveToDoList = () => {
-    removeToDolist(id)
+    removeToDolist(id);
   };
+
+
+  const addTasks = (title: string) => {
+    addTask(title, id)
+  }
 
 
   return (
@@ -94,16 +76,9 @@ export const ToDoListItem = ({
       <h3>
         {title} <button onClick={handleRemoveToDoList}>x</button>
       </h3>
-      <div>
-        <input
-          value={newTaskTitle}
-          onChange={onChangeHandler}
-          onKeyDown={onKeyPressHandler}
-          className={error ? "error" : ""}
-        />
-        <button onClick={onClickButtonHandler}>+</button>
-        {error && <div className={"error-message"}>{error}</div>}
-      </div>
+
+      <AddItemForm addItem={addTasks} />
+
       {tasksList}
       <div>
         <Button
@@ -125,3 +100,9 @@ export const ToDoListItem = ({
     </div>
   );
 };
+
+
+
+
+
+
