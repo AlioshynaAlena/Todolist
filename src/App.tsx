@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import { ToDoListItem } from "./ToDoListItem";
+import { ToDoList } from "./ToDoList";
 import { v1 } from "uuid";
 import { AddItemForm } from "./AddItemForm";
 
@@ -159,7 +159,7 @@ function App() {
         }
 
         return (
-          <ToDoListItem
+          <ToDoList
             key={tl.id}
             id={tl.id}
             title={tl.title}

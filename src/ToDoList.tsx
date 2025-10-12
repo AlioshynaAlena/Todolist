@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent} from "react";
 import { FilterValuesType, TaskType } from "./App";
 import { Button } from "./Button";
 import { AddItemForm } from "./AddItemForm";
@@ -19,7 +19,7 @@ type PropsType = {
 };
 
 //каждый todolist будет получать свои данные (props)
-export const ToDoListItem = ({
+export const ToDoList = ({
   tasks,
   title,
   removeTask,
