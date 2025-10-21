@@ -10,27 +10,27 @@ type AddItemFormPropsType = {
 export const AddItemForm = (props: AddItemFormPropsType) => {
   
 //local state
-  const [newTaskTitle, setNewTaskTitle] = useState("");
+  const [newItemTitle, setNewItemTitle] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewTaskTitle(e.currentTarget.value);
+    setNewItemTitle(e.currentTarget.value);
   };
 
   const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
     setError(null);
 
     if (e.key === "Enter") {
-      props.addItem(newTaskTitle);
-      setNewTaskTitle("");
+      props.addItem(newItemTitle);
+      setNewItemTitle("");
     }
     // setError(null) - можно и здесь
   };
 
   const onClickButtonHandler = () => {
-    if (newTaskTitle.trim() !== "") {
-      props.addItem(newTaskTitle.trim());
-      setNewTaskTitle("");
+    if (newItemTitle.trim() !== "") {
+      props.addItem(newItemTitle.trim());
+      setNewItemTitle("");
     } else {
       setError("Field is reguared");
     }
@@ -45,7 +45,7 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
         className={error ? "error" : ""}
       /> */}
       <TextField
-        value={newTaskTitle}
+        value={newItemTitle}
         onChange={onChangeHandler}
         onKeyDown={onKeyPressHandler}
         error={!!error}

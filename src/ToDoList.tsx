@@ -6,7 +6,7 @@ import { EditableSpan } from "./EditableSpan";
 import { Checkbox, IconButton } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ButtonClick } from "./ButtonClick";
-import { CheckBox } from "@mui/icons-material";
+
 
 type PropsType = {
   id: string;
