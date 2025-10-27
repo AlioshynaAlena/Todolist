@@ -1,8 +1,8 @@
-import { useState } from "react";
+import {useState} from "react";
 import "./App.css";
-import { ToDoList } from "./ToDoList";
-import { v1 } from "uuid";
-import { AddItemForm } from "./AddItemForm";
+import {ToDoList} from "./ToDoList";
+import {v1} from "uuid";
+import {AddItemForm} from "./AddItemForm";
 import {
   AppBar,
   Box,
@@ -42,25 +42,25 @@ function App() {
   let todolistId2 = v1();
 
   let [todolists, setTodolists] = useState<Array<ToDoListType>>([
-    { id: todolistId1, title: "What to learn ", filter: "All" },
-    { id: todolistId2, title: "What to buy ", filter: "All" },
+    {id: todolistId1, title: "What to learn ", filter: "All"},
+    {id: todolistId2, title: "What to buy ", filter: "All"},
   ]);
 
   //ассоциативный массив
   let [tasksObj, setTasks] = useState<TasksStateType>({
     [todolistId1]: [
-      { id: v1(), title: "HTML&CSS", isDone: true },
-      { id: v1(), title: "JS", isDone: true },
-      { id: v1(), title: "React", isDone: false },
-      { id: v1(), title: "Rest API", isDone: false },
-      { id: v1(), title: "GraphQL", isDone: false },
+      {id: v1(), title: "HTML&CSS", isDone: true},
+      {id: v1(), title: "JS", isDone: true},
+      {id: v1(), title: "React", isDone: false},
+      {id: v1(), title: "Rest API", isDone: false},
+      {id: v1(), title: "GraphQL", isDone: false},
     ],
     [todolistId2]: [
-      { id: v1(), title: "Book", isDone: false },
-      { id: v1(), title: "Milk", isDone: true },
-      { id: v1(), title: "Eggs", isDone: true },
-      { id: v1(), title: "Popatoes", isDone: true },
-      { id: v1(), title: "Oil", isDone: true },
+      {id: v1(), title: "Book", isDone: false},
+      {id: v1(), title: "Milk", isDone: true},
+      {id: v1(), title: "Eggs", isDone: true},
+      {id: v1(), title: "Popatoes", isDone: true},
+      {id: v1(), title: "Oil", isDone: true},
     ],
   });
 
@@ -69,7 +69,7 @@ function App() {
     setTodolists(todolists.filter((t) => t.id !== todolistId));
 
     delete tasksObj[todolistId];
-    setTasks({ ...tasksObj });
+    setTasks({...tasksObj});
   };
 
   function changeFilter(value: FilterValuesType, todolistId: string) {
@@ -88,7 +88,7 @@ function App() {
     let filteredTasks = tasks.filter((t) => t.id !== id);
     // по ключу tasksObj[todolistId] обратиться к свойству объекта и заменить в нем на отфильтрованные таски
     tasksObj[todolistId] = filteredTasks;
-    setTasks({ ...tasksObj }); // отдаем копию объекта, чтобы React перересовал
+    setTasks({...tasksObj}); // отдаем копию объекта, чтобы React перересовал
     //‼️короче запись
     // setTasks({...tasksObj, [todolistId]: tasksObj[todolistId].filter((t) => t.id !== id) })
   }
@@ -103,14 +103,14 @@ function App() {
 
   //add task
   function addTask(title: string, todolistId: string) {
-    let task = { id: v1(), title: title, isDone: false };
+    let task = {id: v1(), title: title, isDone: false};
     //сначала достаю нужный массив, куда будем добавлять таску новую
     let tasks = tasksObj[todolistId];
     //создаем новый массив, в который кладем нашу созданную таску и + добавляем таски, которые уже были. По правила имьютабельности, мы не можем изменять массив "стартовый"
     let newTasks = [task, ...tasks];
     //вот тебе новые таски
     tasksObj[todolistId] = newTasks;
-    setTasks({ ...tasksObj });
+    setTasks({...tasksObj});
 
     // //‼️короче запись
     // setTasks({ ...tasksObj, [todolistId]: [...tasksObj[todolistId], task] });
@@ -123,7 +123,7 @@ function App() {
     let task = tasks.find((t) => t.id === taskId);
     if (task) {
       task.isDone = isDone;
-      setTasks({ ...tasksObj });
+      setTasks({...tasksObj});
 
       // //‼️короче запись
       // setTasks({
@@ -142,7 +142,7 @@ function App() {
       filter: "All",
     };
     setTodolists([todolist, ...todolists]);
-    setTasks({ ...tasksObj, [todolist.id]: [] });
+    setTasks({...tasksObj, [todolist.id]: []});
   }
 
   function changeTaskTitle(
@@ -155,14 +155,14 @@ function App() {
     let task = tasks.find((t) => t.id === taskId);
     if (task) {
       task.title = newValue;
-      setTasks({ ...tasksObj });
+      setTasks({...tasksObj});
     }
   }
 
   //UI
   return (
     <div className="app">
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{flexGrow: 1}}>
         <AppBar position="static">
           <Toolbar>
             <IconButton
@@ -170,11 +170,13 @@ function App() {
               edge="start"
               color="inherit"
               aria-label="menu"
-              sx={{ mr: 2 }}
+              sx={{mr: 2}}
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Typography variant="h6"
+                        component="div"
+                        sx={{flexGrow: 1}}>
               News
             </Typography>
             <Button color="inherit">Login</Button>
@@ -183,11 +185,13 @@ function App() {
       </Box>
 
       <Container fixed>
-        <Grid container style={{padding: '20px'}}>
+        <Grid container
+              style={{padding: '20px'}}>
           <AddItemForm addItem={addToDoList} />
         </Grid>
 
-        <Grid container spacing={3}>
+        <Grid container
+              spacing={3}>
           {todolists.map((tl) => {
             let taskForToDoList = tasksObj[tl.id];
 

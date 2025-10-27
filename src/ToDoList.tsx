@@ -1,11 +1,11 @@
-import { ChangeEvent } from "react";
-import { FilterValuesType, TaskType } from "./App";
+import {ChangeEvent} from "react";
+import {FilterValuesType, TaskType} from "./App";
 
-import { AddItemForm } from "./AddItemForm";
-import { EditableSpan } from "./EditableSpan";
-import { Checkbox, IconButton } from "@mui/material";
+import {AddItemForm} from "./AddItemForm";
+import {EditableSpan} from "./EditableSpan";
+import {Checkbox, IconButton} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { ButtonClick } from "./ButtonClick";
+import {ButtonClick} from "./ButtonClick";
 
 
 type PropsType = {
@@ -24,18 +24,18 @@ type PropsType = {
 
 //каждый todolist будет получать свои данные (props)
 export const ToDoList = ({
-  tasks,
-  title,
-  removeTask,
-  changeFilter,
-  addTask,
-  changeStatus,
-  removeToDolist,
-  changeTaskTitle,
-  changeToDoListValue,
-  filter,
-  id,
-}: PropsType) => {
+                           tasks,
+                           title,
+                           removeTask,
+                           changeFilter,
+                           addTask,
+                           changeStatus,
+                           removeToDolist,
+                           changeTaskTitle,
+                           changeToDoListValue,
+                           filter,
+                           id,
+                         }: PropsType) => {
   //‼️Todo: перенести
   // let taskForToDoList = tasksObj[tl.id];
 
@@ -85,9 +85,12 @@ export const ToDoList = ({
               >
                 x
               </button> */}
-              <IconButton aria-label="delete" onClick={() => {removeTask(task.id, id)}}>
-          <DeleteIcon />
-        </IconButton>
+              <IconButton aria-label="delete"
+                          onClick={() => {
+                            removeTask(task.id, id)
+                          }}>
+                <DeleteIcon />
+              </IconButton>
             </div>
           );
         })}
@@ -110,9 +113,11 @@ export const ToDoList = ({
     <div>
       <h3>
         {" "}
-        <EditableSpan title={title} onChange={changeToDoListTitle} />
+        <EditableSpan title={title}
+                      onChange={changeToDoListTitle} />
         {/* <button onClick={handleRemoveToDoList}>x</button> */}
-        <IconButton aria-label="delete" onClick={handleRemoveToDoList}>
+        <IconButton aria-label="delete"
+                    onClick={handleRemoveToDoList}>
           <DeleteIcon />
         </IconButton>
       </h3>
@@ -127,13 +132,13 @@ export const ToDoList = ({
           changeFilter={() => changeFilter("All", id)}
           filter={filter}
           color={'primary'}
-          
+
         />
         <ButtonClick
           title={"Active"}
           changeFilter={() => changeFilter("Active", id)}
           filter={filter}
-          color = {'secondary'}
+          color={'secondary'}
         />
         <ButtonClick
           title={"Completed"}
