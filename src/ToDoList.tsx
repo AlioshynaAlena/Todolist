@@ -1,6 +1,5 @@
 import {ChangeEvent} from "react";
 import {FilterValuesType, TaskType} from "./App";
-
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {Checkbox, IconButton} from "@mui/material";
@@ -38,7 +37,6 @@ export const ToDoList = ({
                          }: PropsType) => {
   //‼️Todo: перенести
   // let taskForToDoList = tasksObj[tl.id];
-
   // if (tl.filter === "Completed") {
   //   taskForToDoList = tasksObj[tl.id].filter((obj) => obj.isDone === true);
   // }

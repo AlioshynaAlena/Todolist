@@ -21,8 +21,6 @@ beforeEach(() => {
   ]
 })
 
-
-
 test('correct todolist should be deleted', () => {
 
   // 2. Действие
@@ -44,8 +42,6 @@ test('correct todolist should be deleted', () => {
   expect(endState[0].id).toBe(todolistId2)
 })
 
-
-
 test('correct todolist should be added', () => {
 // 2. Действие
 //   const action = {
@@ -60,7 +56,6 @@ test('correct todolist should be added', () => {
   expect(endState.length).toBe(3)
   expect(endState[2].title).toBe('New todolist')
 })
-
 
 test('correct todolist should change its title', () => {
 
@@ -77,7 +72,6 @@ test('correct todolist should change its title', () => {
   expect(endState[0].title).toBe('What to learn')
   expect(endState[1].title).toBe('New title')
 })
-
 
 test('correct todolist should change its filter', () => {
 
