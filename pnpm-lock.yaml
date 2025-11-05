@@ -41,9 +41,6 @@ importers:
       redux:
         specifier: ^5.0.1
         version: 5.0.1
-      uuid:
-        specifier: ^13.0.0
-        version: 13.0.0
     devDependencies:
       '@testing-library/jest-dom':
         specifier: ^6.9.1

@@ -54,32 +54,32 @@ function AppWidthRedux() {
 
 
   function removeToDolist(todolistId: string) {
-    const action = removeTodolistAC(todolistId)
+    const action = removeTodolistAC({id: todolistId})
     dispatch(action)
   };
 
   function changeFilter(value: FilterValuesType, todolistId: string) {
-    const action = changeTodolistFilterAC(todolistId, value)
+    const action = changeTodolistFilterAC({id: todolistId, filter: value})
     dispatch(action) //передаем
   }
 
   function removeTask(id: string, todolistId: string ) {
-    const action = removeTaskAC(id, todolistId)
+    const action = removeTaskAC({taskId: id, todolistId: todolistId})
     dispatch(action)
   }
 
   function changeToDoListValue(id: string, newValue: string) {
-    const action = changeTodolistTitleAC(id, newValue)
+    const action = changeTodolistTitleAC({id: id, title: newValue})
     dispatch(action)
   }
 
   function addTask(title: string, todolistId: string) {
-    const action = addTaskAC(title, todolistId)
+    const action = addTaskAC({title: title, todolistId: todolistId})
     dispatch(action)
   }
 
   function changeStatus(taskId: string, isDone: boolean, todolistId: string) {
-    const action = changeTaskStatusAC(taskId, isDone, todolistId)
+    const action = changeTaskStatusAC({taskId: taskId, isDone: isDone, todolistId: todolistId})
     dispatch(action)
   }
 
@@ -90,7 +90,7 @@ function AppWidthRedux() {
   }
 
   function changeTaskTitle(taskId: string, newValue: string, todolistId: string) {
-    const action = changeTaskTitleAC(taskId, newValue, todolistId)
+    const action = changeTaskTitleAC({taskId, newValue, todolistId})
     dispatch(action)
   }
 
