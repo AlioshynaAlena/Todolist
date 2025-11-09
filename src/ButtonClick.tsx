@@ -1,5 +1,6 @@
 import {Button} from "@mui/material";
-import {FilterValuesType} from "./App";
+import {FilterValuesType} from "./app/AppWidthRedux.tsx";
+
 
 export type PropsType = {
   title: FilterValuesType;

@@ -3,9 +3,15 @@ import {
   removeTodolistAC,
   todolistsReducer
 } from './todolists-reducer'
-import {ToDoListType} from "../App.tsx";
 import { beforeEach, expect, test } from 'vitest'
 import {nanoid} from "@reduxjs/toolkit";
+
+export type FilterValuesType = "All" | "Completed" | "Active";
+export type ToDoListType = {
+  id: string;
+  title: string;
+  filter: FilterValuesType;
+};
 
 let todolistId1: string
 let todolistId2: string

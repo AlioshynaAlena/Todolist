@@ -3,7 +3,18 @@ import {
 removeTodolistAC, todolistId1, todolistId2
 } from "./todolists-reducer.ts";
 import {createAction, createReducer, nanoid} from "@reduxjs/toolkit";
-import {TasksStateType} from "../app/AppWidthRedux.tsx";
+
+
+
+export type TaskType = {
+  id: string;
+  title: string;
+  isDone: boolean;
+};
+
+export type TasksStateType = {
+  [key: string]: TaskType[];
+};
 
 //✅state
 const initialState: TasksStateType = {
