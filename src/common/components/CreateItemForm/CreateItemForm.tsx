@@ -13,7 +13,7 @@ type AddItemFormPropsType = {
   addItem: (title: string) => void;
 };
 
-export const AddItemForm = (props: AddItemFormPropsType) => {
+export const CreateItemForm = (props: AddItemFormPropsType) => {
 
 //local state
   const [newItemTitle, setNewItemTitle] = useState("");

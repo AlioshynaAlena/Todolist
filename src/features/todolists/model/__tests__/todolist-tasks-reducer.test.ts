@@ -1,6 +1,6 @@
-import {TasksStateType, ToDoListType} from "../App";
-import {addTodolistAC, todolistsReducer} from "./todolists-reducer";
-import {tasksReducer} from "./tasks-reducer";
+import {TasksStateType, ToDoListType} from "../../../../AppEx.tsx";
+import {addTodolistAC, todolistsReducer} from "../todolists-reducer.ts";
+import {tasksReducer} from "../tasks-reducer.ts";
 import { expect, test } from 'vitest'
 
 test("ids should be equals", () => {

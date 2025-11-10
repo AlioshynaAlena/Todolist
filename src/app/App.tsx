@@ -6,7 +6,7 @@ import {selectThemeMode} from "@/app/app-selectors.ts";
 import {getTheme} from "@/common/theme/theme.ts";
 import {Main} from "@/app/Main.tsx";
 
-function AppWidthRedux() {
+function App() {
   const themeMode = useAppSelector(selectThemeMode)
   const theme = getTheme(themeMode)
 
@@ -22,4 +22,4 @@ function AppWidthRedux() {
   );
 }
 
-export default AppWidthRedux;
+export default App;

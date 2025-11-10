@@ -1,5 +1,7 @@
 import {createAction, createReducer, nanoid} from "@reduxjs/toolkit";
-import {FilterValuesType, ToDoListType} from "../app/AppWidthRedux.tsx";
+import {
+  FilterValuesType, ToDoListType
+} from "@/features/todolists/model/__tests__/todolists-reducer.test.ts";
 
 //✅state
 export let todolistId1 = nanoid();

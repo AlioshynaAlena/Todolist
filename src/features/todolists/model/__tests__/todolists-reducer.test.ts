@@ -2,7 +2,7 @@ import {
   addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC,
   removeTodolistAC,
   todolistsReducer
-} from './todolists-reducer'
+} from '../todolists-reducer.ts'
 import { beforeEach, expect, test } from 'vitest'
 import {nanoid} from "@reduxjs/toolkit";
 

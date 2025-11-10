@@ -1,6 +1,7 @@
 import {Button} from "@mui/material";
-import {FilterValuesType} from "./app/AppWidthRedux.tsx";
-
+import {
+  FilterValuesType
+} from "@/features/todolists/model/__tests__/todolists-reducer.test.ts";
 
 export type PropsType = {
   title: FilterValuesType;
