@@ -18,23 +18,14 @@ export type FieldError = {
   error: string
   field: string
 }
-type BaseResponse = {
+type BaseResponse<T = {}> = {
+  data: T
   resultCode: number
   messages: string[]
   fieldsErrors: FieldError[]
 }
 
-type CreateTodolistResponse = BaseResponse &  {
-  data: { item: Todolist }
-}
 
-type DeleteTodolistResponse = BaseResponse & {
-  data: {}
-}
-
-type UpdateTodolistResponse = BaseResponse & {
-  data: {}
-}
 
 
 
@@ -55,7 +46,7 @@ export const AppHttpRequests = () => {
   }, [])
 
   const createTodolist = (title: string) => {
-    axios.post<CreateTodolistResponse>('https://social-network.samuraijs.com/api/1.1/todo-lists', {title},
+    axios.post<BaseResponse<{ item: Todolist }>>('https://social-network.samuraijs.com/api/1.1/todo-lists', {title},
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -69,7 +60,7 @@ export const AppHttpRequests = () => {
   }
 
   const deleteTodolist = (id: string) => {
-    axios.delete<DeleteTodolistResponse>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${id}`,
+    axios.delete<BaseResponse>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${id}`,
       {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -82,7 +73,7 @@ export const AppHttpRequests = () => {
   }
 
   const changeTodolistTitle = (id: string, title: string) => {
-    axios.put<UpdateTodolistResponse>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${id}`, {title}, {
+    axios.put<BaseResponse>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${id}`, {title}, {
       headers: {
         Authorization: `Bearer ${token}`,
         'API-KEY': apiKey
