@@ -21,7 +21,6 @@ export const CreateItemForm = (props: AddItemFormPropsType) => {
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setNewItemTitle(e.currentTarget.value);
-    setNewItemTitle(e.currentTarget.va)
   };
 
   const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
