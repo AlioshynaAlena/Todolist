@@ -1,38 +1,34 @@
-import {type ChangeEvent, type CSSProperties, useEffect, useState} from 'react'
-import Checkbox from '@mui/material/Checkbox'
-import {CreateItemForm, EditableSpan} from "@/common/components";
-import {Todolist} from "@/features/todolists/api/todolistsApi.types.ts";
-import {todolistsApi} from "@/features/todolists/api/todolistsApi.ts";
-
+import { type ChangeEvent, type CSSProperties, useEffect, useState } from "react"
+import Checkbox from "@mui/material/Checkbox"
+import { CreateItemForm, EditableSpan } from "@/common/components"
+import { Todolist } from "@/features/todolists/api/todolistsApi.types.ts"
+import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
 
 export const AppHttpRequests = () => {
   const [todolists, setTodolists] = useState<Todolist[]>([])
   const [tasks, setTasks] = useState<any>({})
 
   useEffect(() => {
-    todolistsApi.getTodolists().then(res => setTodolists(res.data))
+    todolistsApi.getTodolists().then((res) => setTodolists(res.data))
   }, [])
 
   const createTodolist = (title: string) => {
-    todolistsApi.createTodolist(title)
-      .then((res) => {
-        const newToodlist= res.data.data.item
-        setTodolists([...todolists, newToodlist])
-      } )
+    todolistsApi.createTodolist(title).then((res) => {
+      const newToodlist = res.data.data.item
+      setTodolists([...todolists, newToodlist])
+    })
   }
 
   const deleteTodolist = (id: string) => {
-    todolistsApi.deleteTodolist(id)
-      .then(() => {
-        setTodolists(todolists.filter(t => t.id !== id))
-      })
+    todolistsApi.deleteTodolist(id).then(() => {
+      setTodolists(todolists.filter((t) => t.id !== id))
+    })
   }
 
   const changeTodolistTitle = (id: string, title: string) => {
-    todolistsApi.changeTodolistTitle({id, title})
-      .then(() => {
-        setTodolists(todolists.map(t => t.id === id ? {...t, title} : t ))
-      })
+    todolistsApi.changeTodolistTitle({ id, title }).then(() => {
+      setTodolists(todolists.map((t) => (t.id === id ? { ...t, title } : t)))
+    })
   }
 
   const createTask = (todolistId: string, title: string) => {}
@@ -44,22 +40,19 @@ export const AppHttpRequests = () => {
   const changeTaskTitle = (task: any, title: string) => {}
 
   return (
-    <div style={{margin: '20px'}}>
-      <CreateItemForm addItem={createTodolist}/>
+    <div style={{ margin: "20px" }}>
+      <CreateItemForm addItem={createTodolist} />
       {todolists.map((todolist) => (
         <div key={todolist.id} style={container}>
           <div>
-            <EditableSpan title={todolist.title}
-                          onChange={title => changeTodolistTitle(todolist.id, title)}/>
+            <EditableSpan title={todolist.title} onChange={(title) => changeTodolistTitle(todolist.id, title)} />
             <button onClick={() => deleteTodolist(todolist.id)}>x</button>
           </div>
-          <CreateItemForm addItem={title => createTask(todolist.id, title)}/>
+          <CreateItemForm addItem={(title) => createTask(todolist.id, title)} />
           {tasks[todolist.id]?.map((task: any) => (
             <div key={task.id}>
-              <Checkbox checked={task.isDone}
-                        onChange={e => changeTaskStatus(e, task)}/>
-              <EditableSpan title={task.title}
-                            onChange={title => changeTaskTitle(task, title)}/>
+              <Checkbox checked={task.isDone} onChange={(e) => changeTaskStatus(e, task)} />
+              <EditableSpan title={task.title} onChange={(title) => changeTaskTitle(task, title)} />
               <button onClick={() => deleteTask(todolist.id, task.id)}>x</button>
             </div>
           ))}
@@ -70,11 +63,11 @@ export const AppHttpRequests = () => {
 }
 
 const container: CSSProperties = {
-  border: '1px solid black',
-  margin: '20px 0',
-  padding: '10px',
-  width: '300px',
-  display: 'flex',
-  justifyContent: 'space-between',
-  flexDirection: 'column',
+  border: "1px solid black",
+  margin: "20px 0",
+  padding: "10px",
+  width: "300px",
+  display: "flex",
+  justifyContent: "space-between",
+  flexDirection: "column",
 }
