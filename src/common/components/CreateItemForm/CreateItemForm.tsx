@@ -1,46 +1,38 @@
-import ControlPointIcon
-  from '@mui/icons-material/ControlPoint';
-import {
-  IconButton,
-  TextField
-} from "@mui/material";
-import {
-  ChangeEvent,
-  useState
-} from "react";
+import ControlPointIcon from "@mui/icons-material/ControlPoint"
+import { IconButton, TextField } from "@mui/material"
+import { ChangeEvent, useState } from "react"
 
 type AddItemFormPropsType = {
-  addItem: (title: string) => void;
-};
+  addItem: (title: string) => void
+}
 
 export const CreateItemForm = (props: AddItemFormPropsType) => {
-
-//local state
-  const [newItemTitle, setNewItemTitle] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  //local state
+  const [newItemTitle, setNewItemTitle] = useState("")
+  const [error, setError] = useState<string | null>(null)
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewItemTitle(e.currentTarget.value);
-  };
+    setNewItemTitle(e.currentTarget.value)
+  }
 
   const onKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    setError(null);
+    setError(null)
 
     if (e.key === "Enter") {
-      props.addItem(newItemTitle);
-      setNewItemTitle("");
+      props.addItem(newItemTitle)
+      setNewItemTitle("")
     }
     // setError(null) - можно и здесь
-  };
+  }
 
   const onClickButtonHandler = () => {
     if (newItemTitle.trim() !== "") {
-      props.addItem(newItemTitle.trim());
-      setNewItemTitle("");
+      props.addItem(newItemTitle.trim())
+      setNewItemTitle("")
     } else {
-      setError("Field is reguared");
+      setError("Field is reguared")
     }
-  };
+  }
 
   return (
     <div>
@@ -55,15 +47,15 @@ export const CreateItemForm = (props: AddItemFormPropsType) => {
         onChange={onChangeHandler}
         onKeyDown={onKeyPressHandler}
         error={!!error}
-        variant={'outlined'}
-        label={'Type value'}
+        variant={"outlined"}
+        label={"Type value"}
         helperText={error}
       />
       {/* <Button onClick={onClickButtonHandler} variant={'contained'} color={'info'}>+</Button> */}
-      <IconButton onClick={onClickButtonHandler}
-                  color={'info'}><ControlPointIcon />
+      <IconButton onClick={onClickButtonHandler} color={"info"}>
+        <ControlPointIcon />
       </IconButton>
       {/* {error && <div className={"error-message"}>{error}</div>} */}
     </div>
-  );
-};
+  )
+}
