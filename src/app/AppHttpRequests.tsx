@@ -4,7 +4,8 @@ import { CreateItemForm, EditableSpan } from "@/common/components"
 import { Todolist } from "@/features/todolists/api/todolistsApi.types.ts"
 import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
 import { tasksApi } from "@/features/todolists/api/tasksApi.ts"
-import { DomainTask } from "@/features/todolists/api/tasksApi.types.ts"
+import { DomainTask, UpdateTaskModel } from "@/features/todolists/api/tasksApi.types.ts"
+import { TaskStatus } from "@/common/enums/enums.ts"
 
 export const AppHttpRequests = () => {
   const [todolists, setTodolists] = useState<Todolist[]>([])
@@ -54,7 +55,24 @@ export const AppHttpRequests = () => {
     })
   }
 
-  const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>, task: DomainTask) => {}
+  const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>, task: DomainTask) => {
+    const model: UpdateTaskModel = {
+      title: task.title,
+      description: task.description,
+      startDate: task.startDate,
+      priority: task.priority,
+      deadline: task.deadline,
+      status: e.target.checked ? TaskStatus.Completed : TaskStatus.New,
+    }
+    tasksApi.updateTask({ todolistId: task.todoListId, taskId: task.id, model }).then((res) => {
+      setTasks({
+        ...tasks,
+        [task.todoListId]: tasks[task.todoListId].map((t) => {
+          return t.id === task.id ? res.data.data.item : t
+        }),
+      })
+    })
+  }
 
   const changeTaskTitle = (task: any, title: string) => {}
 
@@ -70,7 +88,7 @@ export const AppHttpRequests = () => {
           <CreateItemForm addItem={(title) => createTask(todolist.id, title)} />
           {tasks[todolist.id]?.map((task) => (
             <div key={task.id}>
-              <Checkbox checked={task.status === 2} onChange={(e) => changeTaskStatus(e, task)} />
+              <Checkbox checked={task.status === TaskStatus.Completed} onChange={(e) => changeTaskStatus(e, task)} />
               <EditableSpan title={task.title} onChange={(title) => changeTaskTitle(task, title)} />
               <button onClick={() => deleteTask(todolist.id, task.id)}>x</button>
             </div>
