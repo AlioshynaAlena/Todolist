@@ -24,7 +24,7 @@
 //   addTodolistAC, changeTodolistFilterAC,
 //   changeTodolistTitleAC, removeTodolistAC,
 //   todolistsReducer
-// } from "./model/todolists-reducer.ts";
+// } from "./model/todolists-slice.ts";
 // import {nanoid} from "@reduxjs/toolkit";
 //
 //

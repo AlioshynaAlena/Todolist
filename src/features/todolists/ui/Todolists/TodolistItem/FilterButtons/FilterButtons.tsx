@@ -1,7 +1,7 @@
 import { Box } from "@mui/material"
 import { ButtonClick } from "@/common/components/NavButton/ButtonClick.tsx"
 import { FilterValuesType } from "@/features/todolists/model/__tests__/todolists-reducer.test.ts"
-import { changeTodolistFilterAC } from "@/features/todolists/model/todolists-reducer.ts"
+import { changeTodolistFilterAC } from "@/features/todolists/model/todolists-slice.ts"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { containerSx } from "@/common/styles/container.styles.ts"
 

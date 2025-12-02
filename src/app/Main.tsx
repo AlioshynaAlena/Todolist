@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid"
 import { CreateItemForm } from "@/common/components/CreateItemForm/CreateItemForm.tsx"
 import { Container } from "@mui/material"
-import { addTodolistAC } from "@/features/todolists/model/todolists-reducer.ts"
+import { addTodolistAC } from "@/features/todolists/model/todolists-slice.ts"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { Todolists } from "@/features/todolists/ui/Todolists/Todolists.tsx"
 

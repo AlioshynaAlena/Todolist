@@ -1,5 +1,5 @@
 import { TasksStateType, ToDoListType } from "../../../../AppEx.tsx"
-import { addTodolistAC, todolistsReducer } from "../todolists-reducer.ts"
+import { addTodolistAC, todolistsReducer } from "../todolists-slice.ts"
 import { tasksReducer } from "../tasks-reducer.ts"
 import { expect, test } from "vitest"
 
