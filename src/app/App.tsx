@@ -2,9 +2,10 @@ import "./App.css"
 import { CssBaseline, ThemeProvider } from "@mui/material"
 import { useAppSelector } from "../common/hooks/useAppSelector.ts"
 import { Header } from "@/common/components/Header/Header.tsx"
-import { selectThemeMode } from "@/app/app-selectors.ts"
+
 import { getTheme } from "@/common/theme/theme.ts"
 import { Main } from "@/app/Main.tsx"
+import { selectThemeMode } from "@/app/app-slice.ts"
 
 function App() {
   const themeMode = useAppSelector(selectThemeMode)

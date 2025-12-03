@@ -22,14 +22,10 @@ export const Tasks = ({ id, filter }: TasksType) => {
 
   return (
     <>
-      {filteredTasks.length === 0 ? (
+      {filteredTasks && filteredTasks.length === 0 ? (
         <p>Тасок нет</p>
       ) : (
-        <List>
-          {filteredTasks.map((task) => (
-            <TaskItem key={task.id} task={task} id={id} />
-          ))}
-        </List>
+        <List>{filteredTasks && filteredTasks.map((task) => <TaskItem key={task.id} task={task} id={id} />)}</List>
       )}
     </>
   )

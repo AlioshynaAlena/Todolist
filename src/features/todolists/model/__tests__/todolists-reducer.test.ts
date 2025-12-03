@@ -7,13 +7,9 @@ import {
 } from "../todolists-slice.ts"
 import { beforeEach, expect, test } from "vitest"
 import { nanoid } from "@reduxjs/toolkit"
+import { ToDoListType } from "@/features/todolists/api/todolistsApi.types.ts"
 
 export type FilterValuesType = "All" | "Completed" | "Active"
-export type ToDoListType = {
-  id: string
-  title: string
-  filter: FilterValuesType
-}
 
 let todolistId1: string
 let todolistId2: string

@@ -4,8 +4,7 @@ import { NavButton } from "@/common/components/NavButton/NavButton.ts"
 import { useAppSelector } from "@/common/hooks/useAppSelector.ts"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { getTheme } from "@/common/theme/theme.ts"
-import { selectThemeMode } from "@/app/app-selectors.ts"
-import { changeThemeModeAC } from "@/app/app-slice.ts"
+import { changeThemeModeAC, selectThemeMode } from "@/app/app-slice.ts"
 import { containerSx } from "@/common/styles/container.styles.ts"
 
 export const Header = () => {
