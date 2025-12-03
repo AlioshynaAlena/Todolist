@@ -5,6 +5,9 @@ export const appSlice = createSlice({
   initialState: {
     themeMode: "light" as ThemeMode,
   },
+  selectors: {
+    selectThemeMode: (state) => state.themeMode,
+  },
   reducers: (create) => {
     return {
       // 1. reducers -  2. action creators
