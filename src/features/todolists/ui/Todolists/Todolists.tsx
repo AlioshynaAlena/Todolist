@@ -3,19 +3,18 @@ import { selectTodolists } from "@/features/todolists/model/todolists-selectors.
 import { Grid, Paper } from "@mui/material"
 import { TodolistItem } from "@/features/todolists/ui/Todolists/TodolistItem/TodolistItem.tsx"
 import { useEffect } from "react"
-import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
-import { fetchTodolistsAC } from "@/features/todolists/model/todolists-slice.ts"
+import { fetchTodosTC } from "@/features/todolists/model/todolists-slice.ts"
 
 export const Todolists = () => {
+  //6
   const todolists = useAppSelector(selectTodolists)
 
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    todolistsApi.getTodolists().then((res) => {
-      dispatch(fetchTodolistsAC({ todolists: res.data }))
-    })
+    //1
+    dispatch(fetchTodosTC())
   }, [])
 
   return (
