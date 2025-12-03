@@ -6,7 +6,7 @@ import {
   changeTaskTitleAC,
   removeTaskAC,
   TaskType,
-} from "@/features/todolists/model/tasks-reducer.ts"
+} from "@/features/todolists/model/tasks-slice.ts"
 import { ChangeEvent } from "react"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { getListItemSx } from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/TaskItem/TaskItem.styles.ts"

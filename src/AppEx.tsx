@@ -19,7 +19,7 @@
 //   changeTaskStatusAC, changeTaskTitleAC,
 //   removeTaskAC,
 //   tasksReducer
-// } from "./model/tasks-reducer.ts";
+// } from "./model/tasks-slice.ts";
 // import {
 //   addTodolistAC, changeTodolistFilterAC,
 //   changeTodolistTitleAC, removeTodolistAC,

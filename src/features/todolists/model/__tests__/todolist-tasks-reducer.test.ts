@@ -1,6 +1,6 @@
 import { TasksStateType, ToDoListType } from "../../../../AppEx.tsx"
 import { addTodolistAC, todolistsReducer } from "../todolists-slice.ts"
-import { tasksReducer } from "../tasks-reducer.ts"
+import { tasksReducer } from "../tasks-slice.ts"
 import { expect, test } from "vitest"
 
 test("ids should be equals", () => {
