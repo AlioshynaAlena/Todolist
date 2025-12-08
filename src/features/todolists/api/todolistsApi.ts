@@ -4,6 +4,7 @@ import { BaseResponse } from "@/common/types"
 
 export const todolistsApi = {
   getTodolists() {
+    //3
     return instance.get<Todolist[]>("/todo-lists")
   },
   changeTodolistTitle(payload: { id: string; title: string }) {
