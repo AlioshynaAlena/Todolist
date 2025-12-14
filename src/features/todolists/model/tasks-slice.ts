@@ -1,5 +1,6 @@
-import { createSlice, nanoid } from "@reduxjs/toolkit"
+import { nanoid } from "@reduxjs/toolkit"
 import { addTodolistTC, removeTodolistTC } from "@/features/todolists/model/todolists-slice.ts"
+import { createAppSlice } from "@/common/utils"
 
 // //✅state
 // const initialState: TasksStateType = {
@@ -29,7 +30,7 @@ export type TasksStateType = {
   [key: string]: TaskType[]
 }
 
-export const taskSlice = createSlice({
+export const taskSlice = createAppSlice({
   name: "tasks",
   initialState: {} as TasksStateType,
   selectors: {
