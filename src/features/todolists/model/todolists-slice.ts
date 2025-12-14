@@ -2,6 +2,7 @@ import { FilterValuesType } from "@/features/todolists/model/__tests__/todolists
 import { Todolist } from "@/features/todolists/api/todolistsApi.types.ts"
 import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
 import { createAppSlice } from "@/common/utils"
+import { setAppStatusAC } from "@/app/app-slice.ts"
 
 export const todolistsSlice = createAppSlice({
   name: "todolists",
@@ -20,9 +21,12 @@ export const todolistsSlice = createAppSlice({
       fetchTodosTC: create.asyncThunk(
         async (_, thunkAPI) => {
           try {
+            thunkAPI.dispatch(setAppStatusAC({ status: "loading" }))
             const res = await todolistsApi.getTodolists() //2
+            thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }))
             return { todolists: res.data } //4
           } catch (e) {
+            thunkAPI.dispatch(setAppStatusAC({ status: "failed" }))
             return thunkAPI.rejectWithValue(e)
           }
         },

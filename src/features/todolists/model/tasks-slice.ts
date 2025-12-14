@@ -4,6 +4,7 @@ import { tasksApi } from "@/features/todolists/api/tasksApi.ts"
 import { DomainTask, UpdateTaskModel } from "@/features/todolists/api/tasksApi.types.ts"
 import { TaskStatus } from "@/common/enums/enums.ts"
 import { RootState } from "@/app/store.ts"
+import { setAppStatusAC } from "@/app/app-slice.ts"
 
 // //✅state
 // const initialState: TasksStateType = {
@@ -43,9 +44,12 @@ export const taskSlice = createAppSlice({
       fetchTasksTC: create.asyncThunk(
         async (todolistId: string, thunkAPI) => {
           try {
+            thunkAPI.dispatch(setAppStatusAC({ status: "loading" }))
             const res = await tasksApi.getTasks(todolistId) //2
+            thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }))
             return { tasks: res.data.items, todolistId } //4
           } catch (e) {
+            thunkAPI.dispatch(setAppStatusAC({ status: "failed" }))
             return thunkAPI.rejectWithValue(e)
           }
         },
@@ -58,9 +62,12 @@ export const taskSlice = createAppSlice({
       addTaskTC: create.asyncThunk(
         async (args: { todolistId: string; title: string }, thunkAPI) => {
           try {
+            thunkAPI.dispatch(setAppStatusAC({ status: "loading" }))
             const res = await tasksApi.createTask(args) //2
+            thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }))
             return { tasks: res.data.data.item } //4
           } catch (e) {
+            thunkAPI.dispatch(setAppStatusAC({ status: "failed" }))
             return thunkAPI.rejectWithValue(e)
           }
         },
@@ -107,9 +114,12 @@ export const taskSlice = createAppSlice({
           }
 
           try {
+            thunkAPI.dispatch(setAppStatusAC({ status: "loading" }))
             const res = await tasksApi.updateTask({ todolistId, taskId, model })
+            thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }))
             return { task: res.data.data.item }
           } catch (error) {
+            thunkAPI.dispatch(setAppStatusAC({ status: "failed" }))
             return thunkAPI.rejectWithValue(null)
           }
         },
