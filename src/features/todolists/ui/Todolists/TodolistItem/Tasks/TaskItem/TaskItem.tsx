@@ -1,18 +1,15 @@
 import { Checkbox, IconButton, ListItem } from "@mui/material"
 import { EditableSpan } from "@/common/components/EditableSpan/EditableSpan.tsx"
 import DeleteIcon from "@mui/icons-material/Delete"
-import {
-  changeTaskStatusAC,
-  changeTaskTitleAC,
-  removeTaskAC,
-  TaskType,
-} from "@/features/todolists/model/tasks-slice.ts"
+import { changeTaskStatusTC, changeTaskTitleAC, removeTaskTC } from "@/features/todolists/model/tasks-slice.ts"
 import { ChangeEvent } from "react"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { getListItemSx } from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/TaskItem/TaskItem.styles.ts"
+import { TaskStatus } from "@/common/enums/enums.ts"
+import { DomainTask } from "@/features/todolists/api/tasksApi.types.ts"
 
 type TaskItemType = {
-  task: TaskType
+  task: DomainTask
   id: string
 }
 
@@ -20,12 +17,12 @@ export const TaskItem = ({ task, id }: TaskItemType) => {
   const dispatch = useAppDispatch()
 
   const deleteTaskHandler = () => {
-    dispatch(removeTaskAC({ taskId: task.id, todolistId: id }))
+    dispatch(removeTaskTC({ taskId: task.id, todolistId: id }))
   }
 
   const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const newStatusValue = e.currentTarget.checked
-    dispatch(changeTaskStatusAC({ taskId: task.id, isDone: newStatusValue, todolistId: id }))
+    const newStatus = e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New
+    dispatch(changeTaskStatusTC({ taskId: task.id, status: newStatus, todolistId: id }))
   }
 
   const onChangeTitleHandler = (newValue: string) => {
@@ -33,8 +30,8 @@ export const TaskItem = ({ task, id }: TaskItemType) => {
   }
 
   return (
-    <ListItem sx={getListItemSx(task.isDone)}>
-      <Checkbox onChange={onChangeStatusHandler} checked={task.isDone} />
+    <ListItem sx={getListItemSx(task.status === TaskStatus.Completed)}>
+      <Checkbox onChange={onChangeStatusHandler} checked={task.status === TaskStatus.Completed} />
       <EditableSpan title={task.title} onChange={onChangeTitleHandler} />
       <IconButton aria-label="delete" onClick={deleteTaskHandler}>
         <DeleteIcon />
