@@ -1,10 +1,10 @@
 import { addTodolistTC, removeTodolistTC } from "@/features/todolists/model/todolists-slice.ts"
-import { createAppSlice } from "@/common/utils"
+import { createAppSlice, handleServerAppError, handleServerNetworkError } from "@/common/utils"
 import { tasksApi } from "@/features/todolists/api/tasksApi.ts"
 import { DomainTask, UpdateTaskModel } from "@/features/todolists/api/tasksApi.types.ts"
 import { ResultCode, TaskStatus } from "@/common/enums/enums.ts"
 import { RootState } from "@/app/store.ts"
-import { setAppErrorAC, setAppStatusAC } from "@/app/app-slice.ts"
+import { setAppStatusAC } from "@/app/app-slice.ts"
 
 // //✅state
 // const initialState: TasksStateType = {
@@ -70,17 +70,12 @@ export const taskSlice = createAppSlice({
               thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }))
               return { task: res.data.data.item } //4
             } else {
-              if (res.data.messages.length) {
-                thunkAPI.dispatch(setAppErrorAC({ error: res.data.messages[0] }))
-              } else {
-                thunkAPI.dispatch(setAppErrorAC({ error: "Some error" + " occurred" }))
-              }
-              thunkAPI.dispatch(setAppStatusAC({ status: "failed" }))
+              handleServerAppError(res.data, thunkAPI.dispatch)
               return thunkAPI.rejectWithValue(null)
             }
-          } catch (e) {
-            thunkAPI.dispatch(setAppStatusAC({ status: "failed" }))
-            return thunkAPI.rejectWithValue(e)
+          } catch (error: any) {
+            handleServerNetworkError(error, thunkAPI.dispatch)
+            return thunkAPI.rejectWithValue(error)
           }
         },
         {
@@ -128,10 +123,16 @@ export const taskSlice = createAppSlice({
           try {
             thunkAPI.dispatch(setAppStatusAC({ status: "loading" }))
             const res = await tasksApi.updateTask({ todolistId, taskId, model })
-            thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }))
-            return { task: res.data.data.item }
-          } catch (error) {
-            thunkAPI.dispatch(setAppStatusAC({ status: "failed" }))
+
+            //🚨отображение ошибок
+            if (res.data.resultCode === ResultCode.Success) {
+              return { task: res.data.data.item }
+            } else {
+              handleServerAppError(res.data, thunkAPI.dispatch)
+              return thunkAPI.rejectWithValue(null)
+            }
+          } catch (error: any) {
+            handleServerNetworkError(error, thunkAPI.dispatch)
             return thunkAPI.rejectWithValue(null)
           }
         },
