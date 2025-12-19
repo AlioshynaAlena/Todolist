@@ -4,9 +4,10 @@ import { ChangeEvent, useState } from "react"
 
 type AddItemFormPropsType = {
   addItem: (title: string) => void
+  disabled?: boolean
 }
 
-export const CreateItemForm = (props: AddItemFormPropsType) => {
+export const CreateItemForm = ({ addItem, disabled }: AddItemFormPropsType) => {
   //local state
   const [newItemTitle, setNewItemTitle] = useState("")
   const [error, setError] = useState<string | null>(null)
@@ -19,7 +20,7 @@ export const CreateItemForm = (props: AddItemFormPropsType) => {
     setError(null)
 
     if (e.key === "Enter") {
-      props.addItem(newItemTitle)
+      addItem(newItemTitle)
       setNewItemTitle("")
     }
     // setError(null) - можно и здесь
@@ -27,7 +28,7 @@ export const CreateItemForm = (props: AddItemFormPropsType) => {
 
   const onClickButtonHandler = () => {
     if (newItemTitle.trim() !== "") {
-      props.addItem(newItemTitle.trim())
+      addItem(newItemTitle.trim())
       setNewItemTitle("")
     } else {
       setError("Field is reguared")
@@ -50,9 +51,10 @@ export const CreateItemForm = (props: AddItemFormPropsType) => {
         variant={"outlined"}
         label={"Type value"}
         helperText={error}
+        disabled={disabled}
       />
       {/* <Button onClick={onClickButtonHandler} variant={'contained'} color={'info'}>+</Button> */}
-      <IconButton onClick={onClickButtonHandler} color={"info"}>
+      <IconButton onClick={onClickButtonHandler} color={"info"} disabled={disabled}>
         <ControlPointIcon />
       </IconButton>
       {/* {error && <div className={"error-message"}>{error}</div>} */}

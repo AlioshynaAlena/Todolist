@@ -1,17 +1,18 @@
 import { List } from "@mui/material"
 import { useAppSelector } from "@/common/hooks/useAppSelector.ts"
-import { FilterValuesType } from "@/features/todolists/model/__tests__/todolists-reducer.test.ts"
 import { TaskItem } from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/TaskItem/TaskItem.tsx"
 import { fetchTasksTC, selectTasks } from "@/features/todolists/model/tasks-slice.ts"
 import { useEffect } from "react"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { TaskStatus } from "@/common/enums/enums.ts"
+import { DomainTodolists } from "@/features/todolists/model/todolists-slice.ts"
 
-export type TasksType = {
-  id: string
-  filter: FilterValuesType
+type Props = {
+  todolist: DomainTodolists
 }
-export const Tasks = ({ id, filter }: TasksType) => {
+
+export const Tasks = ({ todolist }: Props) => {
+  const { id, filter } = todolist
   const tasks = useAppSelector(selectTasks)
   const dispatch = useAppDispatch()
 

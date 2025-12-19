@@ -1,16 +1,16 @@
 import { Box } from "@mui/material"
 import { ButtonClick } from "@/common/components/NavButton/ButtonClick.tsx"
 import { FilterValuesType } from "@/features/todolists/model/__tests__/todolists-reducer.test.ts"
-import { changeTodolistFilterAC } from "@/features/todolists/model/todolists-slice.ts"
+import { changeTodolistFilterAC, DomainTodolists } from "@/features/todolists/model/todolists-slice.ts"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { containerSx } from "@/common/styles/container.styles.ts"
 
-export type FilterButtonsType = {
-  id: string
-  filter: FilterValuesType
+type Props = {
+  todolist: DomainTodolists
 }
 
-export const FilterButtons = ({ id, filter }: FilterButtonsType) => {
+export const FilterButtons = ({ todolist }: Props) => {
+  const { id, filter } = todolist
   const dispatch = useAppDispatch()
 
   const changeFilterHandler = (filter: FilterValuesType) => {
