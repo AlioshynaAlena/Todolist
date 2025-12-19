@@ -2,8 +2,9 @@ import { FilterValuesType } from "@/features/todolists/model/__tests__/todolists
 import { Todolist } from "@/features/todolists/api/todolistsApi.types.ts"
 import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
 import { createAppSlice } from "@/common/utils"
-import { setAppStatusAC } from "@/app/app-slice.ts"
+import { setAppErrorAC, setAppStatusAC } from "@/app/app-slice.ts"
 import { RequestStatus } from "@/common/types/types.ts"
+import { ResultCode } from "@/common/enums/enums.ts"
 
 export const todolistsSlice = createAppSlice({
   name: "todolists",
@@ -82,10 +83,21 @@ export const todolistsSlice = createAppSlice({
       addTodolistTC: create.asyncThunk(
         async (title: string, thunkAPI) => {
           try {
+            thunkAPI.dispatch(setAppStatusAC({ status: "loading" }))
             const res = await todolistsApi.createTodolist(title) //2
-            console.log(res.data.data.item)
-            return { todolist: res.data.data.item } //4
+
+            //🚨отображение ошибок
+            if (res.data.resultCode === ResultCode.Success) {
+              thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }))
+              return { todolist: res.data.data.item } //4
+            } else {
+              thunkAPI.dispatch(setAppStatusAC({ status: "failed" }))
+              const errorMessage = res.data.messages.length ? res.data.messages[0] : "Something went wrong"
+              thunkAPI.dispatch(setAppErrorAC({ error: errorMessage }))
+              return thunkAPI.rejectWithValue(null)
+            }
           } catch (e) {
+            thunkAPI.dispatch(setAppStatusAC({ status: "failed" }))
             return thunkAPI.rejectWithValue(e)
           }
         },

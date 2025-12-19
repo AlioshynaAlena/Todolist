@@ -2,9 +2,9 @@ import { addTodolistTC, removeTodolistTC } from "@/features/todolists/model/todo
 import { createAppSlice } from "@/common/utils"
 import { tasksApi } from "@/features/todolists/api/tasksApi.ts"
 import { DomainTask, UpdateTaskModel } from "@/features/todolists/api/tasksApi.types.ts"
-import { TaskStatus } from "@/common/enums/enums.ts"
+import { ResultCode, TaskStatus } from "@/common/enums/enums.ts"
 import { RootState } from "@/app/store.ts"
-import { setAppStatusAC } from "@/app/app-slice.ts"
+import { setAppErrorAC, setAppStatusAC } from "@/app/app-slice.ts"
 
 // //✅state
 // const initialState: TasksStateType = {
@@ -64,8 +64,20 @@ export const taskSlice = createAppSlice({
           try {
             thunkAPI.dispatch(setAppStatusAC({ status: "loading" }))
             const res = await tasksApi.createTask(args) //2
-            thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }))
-            return { tasks: res.data.data.item } //4
+
+            //🚨отображение ошибок
+            if (res.data.resultCode === ResultCode.Success) {
+              thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }))
+              return { task: res.data.data.item } //4
+            } else {
+              if (res.data.messages.length) {
+                thunkAPI.dispatch(setAppErrorAC({ error: res.data.messages[0] }))
+              } else {
+                thunkAPI.dispatch(setAppErrorAC({ error: "Some error" + " occurred" }))
+              }
+              thunkAPI.dispatch(setAppStatusAC({ status: "failed" }))
+              return thunkAPI.rejectWithValue(null)
+            }
           } catch (e) {
             thunkAPI.dispatch(setAppStatusAC({ status: "failed" }))
             return thunkAPI.rejectWithValue(e)
@@ -73,7 +85,7 @@ export const taskSlice = createAppSlice({
         },
         {
           fulfilled: (state, action) => {
-            state[action.payload.tasks.todoListId].unshift(action.payload.tasks)
+            state[action.payload.task.todoListId].unshift(action.payload.task)
           },
         },
       ),
