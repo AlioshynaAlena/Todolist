@@ -1,8 +1,8 @@
 import { FilterValuesType } from "@/features/todolists/model/__tests__/todolists-reducer.test.ts"
 import { Todolist } from "@/features/todolists/api/todolistsApi.types.ts"
 import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
-import { createAppSlice } from "@/common/utils"
-import { setAppErrorAC, setAppStatusAC } from "@/app/app-slice.ts"
+import { createAppSlice, handleServerAppError, handleServerNetworkError } from "@/common/utils"
+import { setAppStatusAC } from "@/app/app-slice.ts"
 import { RequestStatus } from "@/common/types/types.ts"
 import { ResultCode } from "@/common/enums/enums.ts"
 
@@ -31,9 +31,9 @@ export const todolistsSlice = createAppSlice({
             const res = await todolistsApi.getTodolists() //2
             thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }))
             return { todolists: res.data } //4
-          } catch (e) {
-            thunkAPI.dispatch(setAppStatusAC({ status: "failed" }))
-            return thunkAPI.rejectWithValue(e)
+          } catch (error: any) {
+            handleServerNetworkError(thunkAPI.dispatch, error)
+            return thunkAPI.rejectWithValue(error)
           }
         },
         {
@@ -47,10 +47,17 @@ export const todolistsSlice = createAppSlice({
       changeTodolistTitleTC: create.asyncThunk(
         async (args: { id: string; title: string }, thunkAPI) => {
           try {
-            await todolistsApi.changeTodolistTitle(args)
-            return args
-          } catch (e) {
-            return thunkAPI.rejectWithValue(e)
+            const res = await todolistsApi.changeTodolistTitle(args)
+            if (res.data.resultCode === ResultCode.Success) {
+              thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }))
+              return args
+            } else {
+              handleServerAppError(res.data, thunkAPI.dispatch)
+              return thunkAPI.rejectWithValue(null)
+            }
+          } catch (error: any) {
+            handleServerNetworkError(thunkAPI.dispatch, error)
+            return thunkAPI.rejectWithValue(error)
           }
         },
         {
@@ -65,12 +72,21 @@ export const todolistsSlice = createAppSlice({
           try {
             thunkAPI.dispatch(setAppStatusAC({ status: "loading" }))
             thunkAPI.dispatch(changeTodolistEntityStatusAC({ id, entityStatus: "loading" }))
-            await todolistsApi.deleteTodolist(id) //2
-            thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }))
-            return { id } //4
-          } catch (e) {
-            thunkAPI.dispatch(setAppStatusAC({ status: "failed" }))
-            return thunkAPI.rejectWithValue(e)
+            const res = await todolistsApi.deleteTodolist(id) //2
+
+            //🚨отображение ошибок
+            if (res.data.resultCode === ResultCode.Success) {
+              thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }))
+              return { id } //4
+            } else {
+              thunkAPI.dispatch(changeTodolistEntityStatusAC({ id, entityStatus: "failed" }))
+              handleServerAppError(res.data, thunkAPI.dispatch)
+              return thunkAPI.rejectWithValue(null)
+            }
+          } catch (error: any) {
+            thunkAPI.dispatch(changeTodolistEntityStatusAC({ id, entityStatus: "failed" }))
+            handleServerNetworkError(thunkAPI.dispatch, error)
+            return thunkAPI.rejectWithValue(error)
           }
         },
         {
@@ -91,14 +107,12 @@ export const todolistsSlice = createAppSlice({
               thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }))
               return { todolist: res.data.data.item } //4
             } else {
-              thunkAPI.dispatch(setAppStatusAC({ status: "failed" }))
-              const errorMessage = res.data.messages.length ? res.data.messages[0] : "Something went wrong"
-              thunkAPI.dispatch(setAppErrorAC({ error: errorMessage }))
+              handleServerAppError(res.data, thunkAPI.dispatch)
               return thunkAPI.rejectWithValue(null)
             }
-          } catch (e) {
-            thunkAPI.dispatch(setAppStatusAC({ status: "failed" }))
-            return thunkAPI.rejectWithValue(e)
+          } catch (error: any) {
+            handleServerNetworkError(error, thunkAPI.dispatch)
+            return thunkAPI.rejectWithValue(error)
           }
         },
         {

@@ -34,7 +34,9 @@ export const Tasks = ({ todolist }: Props) => {
       {filteredTasks && filteredTasks.length === 0 ? (
         <p>Тасок нет</p>
       ) : (
-        <List>{filteredTasks && filteredTasks.map((task) => <TaskItem key={task.id} task={task} id={id} />)}</List>
+        <List>
+          {filteredTasks && filteredTasks.map((task) => <TaskItem key={task.id} task={task} todolist={todolist} />)}
+        </List>
       )}
     </>
   )

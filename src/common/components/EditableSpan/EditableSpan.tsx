@@ -4,6 +4,7 @@ import { ChangeEvent, useState } from "react"
 type EditableSpanPropsType = {
   title: string
   onChange: (newValue: string) => void
+  disabled?: boolean
 }
 
 export const EditableSpan = (props: EditableSpanPropsType) => {
@@ -11,6 +12,7 @@ export const EditableSpan = (props: EditableSpanPropsType) => {
   const [title, setTitle] = useState("")
 
   const activateEditMode = () => {
+    if (props.disabled) return
     setEditMode(true)
     setTitle(props.title)
   }
@@ -25,8 +27,6 @@ export const EditableSpan = (props: EditableSpanPropsType) => {
   }
 
   return editMode ? (
-    // (<input type="text" value={title} onChange={onChangeTitleHandler} onBlur={activateViewMode} autoFocus />)
-    // : (<span onDoubleClick={activateEditMode}>{props.title}</span>);
     <TextField type="text" value={title} onChange={onChangeTitleHandler} onBlur={activateViewMode} autoFocus />
   ) : (
     <span onDoubleClick={activateEditMode}>{props.title}</span>

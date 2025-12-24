@@ -145,6 +145,51 @@ export const taskSlice = createAppSlice({
           },
         },
       ),
+      changeTaskTitleTC: create.asyncThunk(
+        async (payload: { todolistId: string; taskId: string; domainModel: Partial<UpdateTaskModel> }, thunkAPI) => {
+          const { todolistId, taskId, domainModel } = payload
+
+          const allTodolistTasks = (thunkAPI.getState() as RootState).tasks[todolistId]
+          const task = allTodolistTasks.find((task) => task.id === taskId)
+
+          if (!task) {
+            return thunkAPI.rejectWithValue(null)
+          }
+
+          const model: UpdateTaskModel = {
+            description: task.description,
+            title: task.title,
+            priority: task.priority,
+            startDate: task.startDate,
+            deadline: task.deadline,
+            status: task.status,
+            ...domainModel,
+          }
+          try {
+            thunkAPI.dispatch(setAppStatusAC({ status: "loading" }))
+            const res = await tasksApi.updateTask({ todolistId, taskId, model })
+
+            //🚨отображение ошибок
+            if (res.data.resultCode === ResultCode.Success) {
+              return { task: res.data.data.item }
+            } else {
+              handleServerAppError(res.data, thunkAPI.dispatch)
+              return thunkAPI.rejectWithValue(null)
+            }
+          } catch (error: any) {
+            handleServerNetworkError(error, thunkAPI.dispatch)
+            return thunkAPI.rejectWithValue(null)
+          }
+        },
+        {
+          fulfilled: (state, action) => {
+            const task = state[action.payload.task.todoListId].find((task) => task.id === action.payload.task.id)
+            if (task) {
+              task.status = action.payload.task.status
+            }
+          },
+        },
+      ),
     }
   },
   //extraReducers используем когда нам нужно сделать dispatch AC, который
@@ -161,5 +206,6 @@ export const taskSlice = createAppSlice({
 })
 
 export const tasksReducer = taskSlice.reducer
-export const { removeTaskTC, changeTaskTitleAC, fetchTasksTC, addTaskTC, changeTaskStatusTC } = taskSlice.actions
+export const { removeTaskTC, changeTaskTitleAC, fetchTasksTC, addTaskTC, changeTaskStatusTC, changeTaskTitleTC } =
+  taskSlice.actions
 export const { selectTasks } = taskSlice.selectors
