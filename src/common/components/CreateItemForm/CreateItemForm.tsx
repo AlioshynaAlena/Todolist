@@ -8,7 +8,6 @@ type AddItemFormPropsType = {
 }
 
 export const CreateItemForm = ({ addItem, disabled }: AddItemFormPropsType) => {
-  //local state
   const [newItemTitle, setNewItemTitle] = useState("")
   const [error, setError] = useState<string | null>(null)
 
@@ -37,12 +36,6 @@ export const CreateItemForm = ({ addItem, disabled }: AddItemFormPropsType) => {
 
   return (
     <div>
-      {/* <input
-        value={newTaskTitle}
-        onChange={onChangeHandler}
-        onKeyDown={onKeyPressHandler}
-        className={error ? "error" : ""}
-      /> */}
       <TextField
         value={newItemTitle}
         onChange={onChangeHandler}
@@ -53,11 +46,9 @@ export const CreateItemForm = ({ addItem, disabled }: AddItemFormPropsType) => {
         helperText={error}
         disabled={disabled}
       />
-      {/* <Button onClick={onClickButtonHandler} variant={'contained'} color={'info'}>+</Button> */}
       <IconButton onClick={onClickButtonHandler} color={"info"} disabled={disabled}>
         <ControlPointIcon />
       </IconButton>
-      {/* {error && <div className={"error-message"}>{error}</div>} */}
     </div>
   )
 }
