@@ -18,7 +18,7 @@ export const Login = () => {
   const theme = getTheme(themeMode)
 
   const {
-    register,
+    // register,
     handleSubmit,
     reset,
     control,
@@ -56,20 +56,58 @@ export const Login = () => {
         </FormLabel>
         <form onSubmit={handleSubmit(onSumbit)}>
           <FormGroup>
-            <TextField
-              label="Email"
-              margin="normal"
-              error={!!errors.email}
-              {...register("email", {
+            {/*<TextField*/}
+            {/*  label="Email"*/}
+            {/*  margin="normal"*/}
+            {/*  error={!!errors.email}*/}
+            {/*  {...register("email", {*/}
+            {/*    required: "Email is required",*/}
+            {/*    pattern: {*/}
+            {/*      value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,*/}
+            {/*      message: "Incorrect email address",*/}
+            {/*    },*/}
+            {/*  })}*/}
+            {/*/>*/}
+            {/*{errors.email && <span className={styles.errorMessage}>{errors.email.message}</span>}*/}
+            {/*<TextField type="password" label="Password" margin="normal" {...register("password")} />*/}
+
+            <Controller
+              name="email"
+              control={control}
+              rules={{
                 required: "Email is required",
                 pattern: {
                   value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
                   message: "Incorrect email address",
                 },
-              })}
+              }}
+              render={({ field }) => <TextField {...field} />}
             />
+
             {errors.email && <span className={styles.errorMessage}>{errors.email.message}</span>}
-            <TextField type="password" label="Password" margin="normal" {...register("password")} />
+
+            <Controller
+              name="password"
+              control={control}
+              rules={{
+                required: "Password is required",
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters",
+                },
+              }}
+              render={({ field, fieldState }) => (
+                <TextField
+                  {...field}
+                  type="password"
+                  label="Password"
+                  margin="normal"
+                  error={!!fieldState.error}
+                  helperText={fieldState.error?.message}
+                />
+              )}
+            />
+
             <FormControlLabel
               label="Remember me"
               control={
@@ -81,7 +119,6 @@ export const Login = () => {
                   )}
                 />
               }
-              {...register("rememberMe")}
             />
             <Button type="submit" variant="contained" color="primary">
               Login
