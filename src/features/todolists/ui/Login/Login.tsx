@@ -13,6 +13,7 @@ import { Controller, useForm } from "react-hook-form"
 import styles from "./Login.module.css"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { loginSchema } from "@/features/auth/lib/schemas"
+import { LoginInputs } from "@/features/auth/lib/schemas/types.ts"
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
@@ -133,10 +134,4 @@ export const Login = () => {
       </FormControl>
     </Grid>
   )
-}
-
-type LoginInputs = {
-  email: string
-  password: string
-  rememberMe: boolean
 }
