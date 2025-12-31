@@ -9,7 +9,7 @@ import FormControlLabel from "@mui/material/FormControlLabel"
 import FormGroup from "@mui/material/FormGroup"
 import FormLabel from "@mui/material/FormLabel"
 import TextField from "@mui/material/TextField"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import styles from "./Login.module.css"
 
 export const Login = () => {
@@ -70,7 +70,19 @@ export const Login = () => {
             />
             {errors.email && <span className={styles.errorMessage}>{errors.email.message}</span>}
             <TextField type="password" label="Password" margin="normal" {...register("password")} />
-            <FormControlLabel label="Remember me" control={<Checkbox />} {...register("rememberMe")} />
+            <FormControlLabel
+              label="Remember me"
+              control={
+                <Controller
+                  name="rememberMe"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <Checkbox onChange={(e) => onChange(e.target.checked)} checked={value} />
+                  )}
+                />
+              }
+              {...register("rememberMe")}
+            />
             <Button type="submit" variant="contained" color="primary">
               Login
             </Button>
