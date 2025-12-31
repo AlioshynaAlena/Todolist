@@ -11,6 +11,8 @@ import FormLabel from "@mui/material/FormLabel"
 import TextField from "@mui/material/TextField"
 import { Controller, useForm } from "react-hook-form"
 import styles from "./Login.module.css"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { loginSchema } from "@/features/auth/lib/schemas"
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
@@ -23,7 +25,10 @@ export const Login = () => {
     reset,
     control,
     formState: { errors },
-  } = useForm<LoginInputs>({ defaultValues: { email: "", password: "", rememberMe: false } })
+  } = useForm<LoginInputs>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: "", password: "", rememberMe: false },
+  })
 
   const onSumbit = (data: LoginInputs) => {
     console.log(data)
