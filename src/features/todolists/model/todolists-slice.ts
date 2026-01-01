@@ -5,6 +5,7 @@ import { createAppSlice, handleServerAppError, handleServerNetworkError } from "
 import { setAppStatusAC } from "@/app/app-slice.ts"
 import { RequestStatus } from "@/common/types/types.ts"
 import { ResultCode } from "@/common/enums/enums.ts"
+import { TodolistSchema } from "@/features/todolists/model/schemas/schemas.ts"
 
 export const todolistsSlice = createAppSlice({
   name: "todolists",
@@ -29,9 +30,11 @@ export const todolistsSlice = createAppSlice({
           try {
             thunkAPI.dispatch(setAppStatusAC({ status: "loading" }))
             const res = await todolistsApi.getTodolists() //2
+            TodolistSchema.array().parse(res.data) // zod 💎
             thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }))
             return { todolists: res.data } //4
           } catch (error: any) {
+            console.log(error)
             handleServerNetworkError(thunkAPI.dispatch, error)
             return thunkAPI.rejectWithValue(error)
           }
