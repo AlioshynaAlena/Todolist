@@ -5,6 +5,7 @@ import { DomainTask, UpdateTaskModel } from "@/features/todolists/api/tasksApi.t
 import { ResultCode, TaskStatus } from "@/common/enums/enums.ts"
 import { RootState } from "@/app/store.ts"
 import { setAppStatusAC } from "@/app/app-slice.ts"
+import { domainTaskSchema } from "@/features/todolists/model/schemas/schemas.ts"
 
 // //✅state
 // const initialState: TasksStateType = {
@@ -46,9 +47,11 @@ export const taskSlice = createAppSlice({
           try {
             thunkAPI.dispatch(setAppStatusAC({ status: "loading" }))
             const res = await tasksApi.getTasks(todolistId) //2
+            domainTaskSchema.array().parse(res.data.items) // zod 💎
             thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }))
             return { tasks: res.data.items, todolistId } //4
           } catch (e) {
+            console.log(e)
             thunkAPI.dispatch(setAppStatusAC({ status: "failed" }))
             return thunkAPI.rejectWithValue(e)
           }
