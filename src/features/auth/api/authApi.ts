@@ -6,4 +6,7 @@ export const authApi = {
   login(payload: LoginInputs) {
     return instance.post<BaseResponse<{ userId: number; token: string }>>("/auth/login", payload)
   },
+  loguot() {
+    return instance.delete<BaseResponse>("/auth/login")
+  },
 }

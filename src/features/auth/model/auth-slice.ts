@@ -39,9 +39,34 @@ export const authSlice = createAppSlice({
         },
       },
     ),
+    logoutTC: create.asyncThunk(
+      async (_, { dispatch, rejectWithValue }) => {
+        try {
+          dispatch(setAppStatusAC({ status: "loading" }))
+          const res = await authApi.loguot() //2
+          //🚨отображение ошибок
+          if (res.data.resultCode === ResultCode.Success) {
+            dispatch(setAppStatusAC({ status: "succeeded" }))
+            localStorage.removeItem(AUTH_TOKEN)
+            return { isLoggedIn: false } //4
+          } else {
+            handleServerAppError(res.data, dispatch)
+            return rejectWithValue(null)
+          }
+        } catch (error: any) {
+          handleServerNetworkError(error, dispatch)
+          return rejectWithValue(error)
+        }
+      },
+      {
+        fulfilled: (state, action) => {
+          state.isLoggedIn = action.payload.isLoggedIn
+        },
+      },
+    ),
   }),
 })
 
 export const { selectIsLoggedIn } = authSlice.selectors
-export const { loginTC } = authSlice.actions
+export const { loginTC, logoutTC } = authSlice.actions
 export const authReducer = authSlice.reducer
