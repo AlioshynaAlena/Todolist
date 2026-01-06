@@ -15,14 +15,11 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { loginSchema } from "@/features/auth/lib/schemas"
 import { LoginInputs } from "@/features/auth/lib/schemas/types.ts"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
-import { loginTC, selectIsLoggedIn } from "@/features/auth/model/auth-slice.ts"
-import { Navigate } from "react-router"
-import { Path } from "@/common/routing/Routing.tsx"
+import { loginTC } from "@/features/auth/model/auth-slice.ts"
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
   const dispatch = useAppDispatch()
-  const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
   const theme = getTheme(themeMode)
 
@@ -43,9 +40,9 @@ export const Login = () => {
     reset()
   }
 
-  if (isLoggedIn) {
-    return <Navigate to={Path.Main} />
-  }
+  // if (isLoggedIn) {
+  //   return <Navigate to={Path.Main} />
+  // }
 
   return (
     <Grid container justifyContent={"center"}>

@@ -6,12 +6,18 @@ import { setAppStatusAC } from "@/app/app-slice.ts"
 import { RequestStatus } from "@/common/types/types.ts"
 import { ResultCode } from "@/common/enums/enums.ts"
 import { TodolistSchema } from "@/features/todolists/model/schemas/schemas.ts"
+import { clearDataAC } from "@/common/actions"
 
 export const todolistsSlice = createAppSlice({
   name: "todolists",
   initialState: [] as DomainTodolists[],
   selectors: {
     selectTodolists: (state) => state,
+  },
+  extraReducers: (builder) => {
+    builder.addCase(clearDataAC, () => {
+      return []
+    })
   },
   reducers: (create) => {
     return {
