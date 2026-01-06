@@ -14,9 +14,12 @@ import styles from "./Login.module.css"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { loginSchema } from "@/features/auth/lib/schemas"
 import { LoginInputs } from "@/features/auth/lib/schemas/types.ts"
+import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
+import { loginTC } from "@/features/auth/model/auth-slice.ts"
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
+  const dispatch = useAppDispatch()
 
   const theme = getTheme(themeMode)
 
@@ -32,7 +35,7 @@ export const Login = () => {
   })
 
   const onSumbit = (data: LoginInputs) => {
-    console.log(data)
+    dispatch(loginTC(data))
     //Для очистки формы после успешного выполнения onSubmit
     reset()
   }
@@ -62,21 +65,6 @@ export const Login = () => {
         </FormLabel>
         <form onSubmit={handleSubmit(onSumbit)}>
           <FormGroup>
-            {/*<TextField*/}
-            {/*  label="Email"*/}
-            {/*  margin="normal"*/}
-            {/*  error={!!errors.email}*/}
-            {/*  {...register("email", {*/}
-            {/*    required: "Email is required",*/}
-            {/*    pattern: {*/}
-            {/*      value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,*/}
-            {/*      message: "Incorrect email address",*/}
-            {/*    },*/}
-            {/*  })}*/}
-            {/*/>*/}
-            {/*{errors.email && <span className={styles.errorMessage}>{errors.email.message}</span>}*/}
-            {/*<TextField type="password" label="Password" margin="normal" {...register("password")} />*/}
-
             <Controller
               name="email"
               control={control}
