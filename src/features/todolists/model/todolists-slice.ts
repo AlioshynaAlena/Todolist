@@ -34,7 +34,6 @@ export const todolistsSlice = createAppSlice({
             thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }))
             return { todolists: res.data } //4
           } catch (error: any) {
-            console.log(error)
             handleServerNetworkError(thunkAPI.dispatch, error)
             return thunkAPI.rejectWithValue(error)
           }

@@ -15,11 +15,14 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { loginSchema } from "@/features/auth/lib/schemas"
 import { LoginInputs } from "@/features/auth/lib/schemas/types.ts"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
-import { loginTC } from "@/features/auth/model/auth-slice.ts"
+import { loginTC, selectIsLoggedIn } from "@/features/auth/model/auth-slice.ts"
+import { Navigate } from "react-router"
+import { Path } from "@/common/routing/Routing.tsx"
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
   const dispatch = useAppDispatch()
+  const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
   const theme = getTheme(themeMode)
 
@@ -38,6 +41,10 @@ export const Login = () => {
     dispatch(loginTC(data))
     //Для очистки формы после успешного выполнения onSubmit
     reset()
+  }
+
+  if (isLoggedIn) {
+    return <Navigate to={Path.Main} />
   }
 
   return (

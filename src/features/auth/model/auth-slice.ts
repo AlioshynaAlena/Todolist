@@ -3,6 +3,7 @@ import { createAppSlice, handleServerAppError, handleServerNetworkError } from "
 import { setAppStatusAC } from "@/app/app-slice.ts"
 import { authApi } from "@/features/auth/api/authApi.ts"
 import { ResultCode } from "@/common/enums/enums.ts"
+import { AUTH_TOKEN } from "@/common/constants"
 
 export const authSlice = createAppSlice({
   name: "auth",
@@ -17,11 +18,11 @@ export const authSlice = createAppSlice({
       async (data: LoginInputs, { dispatch, rejectWithValue }) => {
         try {
           dispatch(setAppStatusAC({ status: "loading" }))
-          const res = await authApi.login(data)
-          debugger //2
+          const res = await authApi.login(data) //2
           //🚨отображение ошибок
           if (res.data.resultCode === ResultCode.Success) {
             dispatch(setAppStatusAC({ status: "succeeded" }))
+            localStorage.setItem(AUTH_TOKEN, res.data.data.token)
             return { isLoggedIn: true } //4
           } else {
             handleServerAppError(res.data, dispatch)
