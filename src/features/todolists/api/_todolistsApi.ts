@@ -3,6 +3,7 @@ import type { Todolist } from "./todolistsApi.types"
 import { BaseResponse } from "@/common/types"
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import { AUTH_TOKEN } from "@/common/constants"
+import { DomainTodolists } from "@/features/todolists/model/todolists-slice.ts"
 
 export const todolistsApi = createApi({
   reducerPath: "todolistsApi",
@@ -16,13 +17,15 @@ export const todolistsApi = createApi({
     },
   }),
   endpoints: (build) => ({
-    getTodolists: build.query<Todolist[], void>({
+    getTodolists: build.query<DomainTodolists[], void>({
       query: () => {
         return {
           method: "get",
           url: "/todo-lists",
         }
       },
+      transformResponse: (todolists: Todolist[]): DomainTodolists[] =>
+        todolists.map((todolist) => ({ ...todolist, filter: "All", entityStatus: "idle" })),
     }),
   }),
 })
