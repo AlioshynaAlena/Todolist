@@ -32,7 +32,7 @@ export const authSlice = createAppSlice({
             return rejectWithValue(null)
           }
         } catch (error: any) {
-          handleServerNetworkError(error, dispatch)
+          handleServerNetworkError(dispatch, error)
           return rejectWithValue(error)
         }
       },
@@ -59,7 +59,7 @@ export const authSlice = createAppSlice({
             return rejectWithValue(null)
           }
         } catch (error: any) {
-          handleServerNetworkError(error, dispatch)
+          handleServerNetworkError(dispatch, error)
           return rejectWithValue(error)
         }
       },
@@ -83,8 +83,8 @@ export const authSlice = createAppSlice({
             return rejectWithValue(null)
           }
         } catch (error: any) {
-          handleServerNetworkError(error, dispatch)
-          return rejectWithValue(null)
+          handleServerNetworkError(dispatch, error)
+          return rejectWithValue(error)
         }
       },
       {

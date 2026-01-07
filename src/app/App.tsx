@@ -18,9 +18,11 @@ function App() {
   const [isInitialized, setIsInitialized] = useState(false)
 
   useEffect(() => {
-    dispatch(initializeAppTC()).finally(() => {
-      setIsInitialized(true)
-    })
+    dispatch(initializeAppTC())
+      .unwrap()
+      .finally(() => {
+        setIsInitialized(true)
+      })
   }, [])
 
   if (!isInitialized) {
