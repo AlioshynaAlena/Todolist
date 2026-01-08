@@ -15,11 +15,16 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { loginSchema } from "@/features/auth/lib/schemas"
 import { LoginInputs } from "@/features/auth/lib/schemas/types.ts"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
-import { loginTC } from "@/features/auth/model/auth-slice.ts"
+import { setIsLoggedInAC } from "@/features/auth/model/auth-slice.ts"
+import { useLoginMutation } from "@/features/auth/api/authApi.ts"
+import { ResultCode } from "@/common/enums/enums.ts"
+import { AUTH_TOKEN } from "@/common/constants"
 
 export const Login = () => {
   const themeMode = useAppSelector(selectThemeMode)
   const dispatch = useAppDispatch()
+
+  const [login] = useLoginMutation()
 
   const theme = getTheme(themeMode)
 
@@ -35,9 +40,13 @@ export const Login = () => {
   })
 
   const onSumbit = (data: LoginInputs) => {
-    dispatch(loginTC(data))
-    //Для очистки формы после успешного выполнения onSubmit
-    reset()
+    login(data).then((res) => {
+      if (res.data?.resultCode === ResultCode.Success) {
+        dispatch(setIsLoggedInAC({ isLoggedIn: true }))
+        localStorage.setItem(AUTH_TOKEN, res.data.data.token)
+        reset()
+      }
+    })
   }
 
   // if (isLoggedIn) {
