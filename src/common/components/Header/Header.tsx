@@ -6,7 +6,11 @@ import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { getTheme } from "@/common/theme/theme.ts"
 import { changeThemeModeAC, selectStatus, selectThemeMode } from "@/app/app-slice.ts"
 import { containerSx } from "@/common/styles/container.styles.ts"
-import { logoutTC, selectIsLoggedIn, selectUser } from "@/features/auth/model/auth-slice.ts"
+import { selectIsLoggedIn, selectUser, setIsLoggedInAC } from "@/features/auth/model/auth-slice.ts"
+import { useLogoutMutation } from "@/features/auth/api/authApi.ts"
+import { ResultCode } from "@/common/enums/enums.ts"
+import { AUTH_TOKEN } from "@/common/constants"
+import { clearDataAC } from "@/common/actions"
 
 export const Header = () => {
   const themeMode = useAppSelector(selectThemeMode)
@@ -16,12 +20,20 @@ export const Header = () => {
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
   const user = useAppSelector(selectUser)
 
+  const [logout] = useLogoutMutation()
+
   function changeMode() {
     dispatch(changeThemeModeAC({ themeMode: themeMode === "light" ? "dark" : "light" }))
   }
 
   function logoutHandler() {
-    dispatch(logoutTC())
+    logout().then((res) => {
+      if (res.data?.resultCode === ResultCode.Success) {
+        dispatch(setIsLoggedInAC({ isLoggedIn: false }))
+        localStorage.removeItem(AUTH_TOKEN)
+        dispatch(clearDataAC())
+      }
+    })
   }
 
   return (
