@@ -9,7 +9,7 @@ import FormControlLabel from "@mui/material/FormControlLabel"
 import FormGroup from "@mui/material/FormGroup"
 import FormLabel from "@mui/material/FormLabel"
 import TextField from "@mui/material/TextField"
-import { Controller, useForm } from "react-hook-form"
+import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import styles from "./Login.module.css"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { loginSchema } from "@/features/auth/lib/schemas"
@@ -39,19 +39,20 @@ export const Login = () => {
     defaultValues: { email: "", password: "", rememberMe: false },
   })
 
-  const onSumbit = (data: LoginInputs) => {
-    login(data).then((res) => {
-      if (res.data?.resultCode === ResultCode.Success) {
-        dispatch(setIsLoggedInAC({ isLoggedIn: true }))
-        localStorage.setItem(AUTH_TOKEN, res.data.data.token)
-        reset()
-      }
-    })
-  }
+  const onSubmit: SubmitHandler<LoginInputs> = (data) => {
+    console.log("📤 Submitting data:", data)
 
-  // if (isLoggedIn) {
-  //   return <Navigate to={Path.Main} />
-  // }
+    login(data)
+      .then((res) => {
+        if (res.data?.resultCode === ResultCode.Success) {
+          dispatch(setIsLoggedInAC({ isLoggedIn: true }))
+          localStorage.setItem(AUTH_TOKEN, res.data.data.token)
+        }
+      })
+      .finally(() => {
+        reset()
+      })
+  }
 
   return (
     <Grid container justifyContent={"center"}>
@@ -76,7 +77,7 @@ export const Login = () => {
             <b>Password:</b> free
           </p>
         </FormLabel>
-        <form onSubmit={handleSubmit(onSumbit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <FormGroup>
             <Controller
               name="email"

@@ -8,10 +8,10 @@ export const authApi = baseApi.injectEndpoints({
       query: () => "auth/me",
     }),
     login: build.mutation<BaseResponse<{ userId: number; token: string }>, LoginInputs>({
-      query: (payload) => ({
+      query: (body) => ({
         url: "auth/login",
         method: "POST",
-        payload,
+        body,
       }),
     }),
     logout: build.mutation<BaseResponse, void>({
