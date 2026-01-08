@@ -2,7 +2,7 @@ import { type ChangeEvent, type CSSProperties, useEffect, useState } from "react
 import Checkbox from "@mui/material/Checkbox"
 import { CreateItemForm, EditableSpan } from "@/common/components"
 import { Todolist } from "@/features/todolists/api/todolistsApi.types.ts"
-import { _todolistsApi } from "@/features/todolists/api/_todolistsApi.ts"
+import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
 import { tasksApi } from "@/features/todolists/api/tasksApi.ts"
 import { DomainTask, UpdateTaskModel } from "@/features/todolists/api/tasksApi.types.ts"
 import { TaskStatus } from "@/common/enums/enums.ts"
@@ -12,7 +12,7 @@ export const AppHttpRequests = () => {
   const [tasks, setTasks] = useState<Record<string, DomainTask[]>>({})
 
   // useEffect(() => {
-  //   _todolistsApi.getTodolists().then((res) => {
+  //   todolistsApi.getTodolists().then((res) => {
   //     const todolists = res.data
   //     setTodolists(todolists)
   //     todolists.forEach((todolist) => {
@@ -22,7 +22,7 @@ export const AppHttpRequests = () => {
   // }, [])
 
   useEffect(() => {
-    _todolistsApi.getTodolists().then((res) => {
+    todolistsApi.getTodolists().then((res) => {
       const todolists = res.data
       setTodolists(todolists)
 
@@ -38,20 +38,20 @@ export const AppHttpRequests = () => {
   }, [])
 
   const createTodolist = (title: string) => {
-    _todolistsApi.createTodolist(title).then((res) => {
+    todolistsApi.createTodolist(title).then((res) => {
       const newToodlist = res.data.data.item
       setTodolists([...todolists, newToodlist])
     })
   }
 
   const deleteTodolist = (id: string) => {
-    _todolistsApi.deleteTodolist(id).then(() => {
+    todolistsApi.deleteTodolist(id).then(() => {
       setTodolists(todolists.filter((t) => t.id !== id))
     })
   }
 
   const changeTodolistTitle = (id: string, title: string) => {
-    _todolistsApi.changeTodolistTitle({ id, title }).then(() => {
+    todolistsApi.changeTodolistTitle({ id, title }).then(() => {
       setTodolists(todolists.map((t) => (t.id === id ? { ...t, title } : t)))
     })
   }

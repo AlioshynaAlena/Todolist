@@ -3,7 +3,7 @@ import { IconButton } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
 import { DomainTodolists } from "@/features/todolists/model/todolists-slice.ts"
 import styles from "./TodolistTitle.module.css"
-import { useChangeTodolistTitleMutation, useDeleteTodolistMutation } from "@/features/todolists/api/_todolistsApi.ts"
+import { useChangeTodolistTitleMutation, useDeleteTodolistMutation } from "@/features/todolists/api/todolistsApi.ts"
 
 type Props = {
   todolist: DomainTodolists

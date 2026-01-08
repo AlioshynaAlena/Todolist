@@ -1,6 +1,6 @@
 import { Grid, Paper } from "@mui/material"
 import { TodolistItem } from "@/features/todolists/ui/Todolists/TodolistItem/TodolistItem.tsx"
-import { useGetTodolistsQuery } from "@/features/todolists/api/_todolistsApi.ts"
+import { useGetTodolistsQuery } from "@/features/todolists/api/todolistsApi.ts"
 
 export const Todolists = () => {
   const { data: todolists } = useGetTodolistsQuery()

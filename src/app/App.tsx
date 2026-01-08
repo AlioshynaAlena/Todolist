@@ -7,23 +7,27 @@ import { ErrorSnackbar, Header } from "@/common/components"
 import { Routing } from "@/common/routing/Routing.tsx"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { useEffect, useState } from "react"
-import { initializeAppTC } from "@/features/auth/model/auth-slice.ts"
 import styles from "../app/App.module.css"
+import { ResultCode } from "@/common/enums/enums.ts"
+import { useMeQuery } from "@/features/auth/api/authApi.ts"
+import { setIsLoggedInAC } from "@/features/auth/model/auth-slice.ts"
 
 function App() {
   const themeMode = useAppSelector(selectThemeMode)
   const theme = getTheme(themeMode)
   const dispatch = useAppDispatch()
 
+  const { data, isLoading } = useMeQuery()
+
   const [isInitialized, setIsInitialized] = useState(false)
 
   useEffect(() => {
-    dispatch(initializeAppTC())
-      .unwrap()
-      .finally(() => {
-        setIsInitialized(true)
-      })
-  }, [])
+    if (isLoading) return
+    if (data?.resultCode === ResultCode.Success) {
+      dispatch(setIsLoggedInAC({ isLoggedIn: true }))
+    }
+    setIsInitialized(true)
+  }, [isLoading])
 
   if (!isInitialized) {
     return (
