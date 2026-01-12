@@ -1,20 +1,19 @@
 import { CreateItemForm } from "../../../../../common/components/CreateItemForm/CreateItemForm.tsx"
-import { addTaskTC } from "@/features/todolists/model/tasks-slice.ts"
-import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { TodolistTitle } from "@/features/todolists/ui/Todolists/TodolistItem/TodolistTitle/TodolistTitle.tsx"
 import { Tasks } from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/Tasks.tsx"
 import { FilterButtons } from "@/features/todolists/ui/Todolists/TodolistItem/FilterButtons/FilterButtons.tsx"
 import { DomainTodolists } from "@/features/todolists/model/todolists-slice.ts"
+import { useCreateTaskMutation } from "@/features/todolists/api/tasksApi.ts"
 
 type Props = {
   todolist: DomainTodolists
 }
 //каждый todolist будет получать свои данные (props)
 export const TodolistItem = ({ todolist }: Props) => {
-  const dispatch = useAppDispatch()
+  const [addTask] = useCreateTaskMutation()
 
   const addTasks = (title: string) => {
-    dispatch(addTaskTC({ todolistId: todolist.id, title }))
+    addTask({ todolistId: todolist.id, title })
   }
 
   return (

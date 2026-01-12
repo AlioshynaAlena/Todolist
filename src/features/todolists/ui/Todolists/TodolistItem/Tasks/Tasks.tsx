@@ -1,11 +1,8 @@
 import { List } from "@mui/material"
-import { useAppSelector } from "@/common/hooks/useAppSelector.ts"
 import { TaskItem } from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/TaskItem/TaskItem.tsx"
-import { fetchTasksTC, selectTasks } from "@/features/todolists/model/tasks-slice.ts"
-import { useEffect } from "react"
-import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { TaskStatus } from "@/common/enums/enums.ts"
 import { DomainTodolists } from "@/features/todolists/model/todolists-slice.ts"
+import { useGetTasksQuery } from "@/features/todolists/api/tasksApi.ts"
 
 type Props = {
   todolist: DomainTodolists
@@ -13,29 +10,29 @@ type Props = {
 
 export const Tasks = ({ todolist }: Props) => {
   const { id, filter } = todolist
-  const tasks = useAppSelector(selectTasks)
-  const dispatch = useAppDispatch()
 
-  useEffect(() => {
-    dispatch(fetchTasksTC(id)) //1
-  }, [])
+  const { data } = useGetTasksQuery(id)
 
-  const todolistTasks = tasks[id]
-  let filteredTasks = todolistTasks
+  console.log("Tasks data:", data?.items)
+  console.log("Current filter:", filter)
+
+  let filteredTasks = data?.items
   if (filter === "Completed") {
-    filteredTasks = tasks[id].filter((task) => task.status === TaskStatus.Completed)
+    filteredTasks = filteredTasks?.filter((task) => task.status === TaskStatus.Completed)
   }
   if (filter === "Active") {
-    filteredTasks = tasks[id].filter((task) => task.status === TaskStatus.New)
+    filteredTasks = filteredTasks?.filter((task) => task.status === TaskStatus.New)
   }
 
   return (
     <>
-      {filteredTasks && filteredTasks.length === 0 ? (
+      {filteredTasks?.length === 0 ? (
         <p>Тасок нет</p>
       ) : (
         <List>
-          {filteredTasks && filteredTasks.map((task) => <TaskItem key={task.id} task={task} todolist={todolist} />)}
+          {filteredTasks?.map((task) => (
+            <TaskItem key={task.id} task={task} todolist={todolist} />
+          ))}
         </List>
       )}
     </>

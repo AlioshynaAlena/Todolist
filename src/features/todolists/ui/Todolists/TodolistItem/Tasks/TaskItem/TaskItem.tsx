@@ -1,13 +1,17 @@
 import { Checkbox, IconButton, ListItem } from "@mui/material"
 import { EditableSpan } from "@/common/components/EditableSpan/EditableSpan.tsx"
 import DeleteIcon from "@mui/icons-material/Delete"
-import { changeTaskStatusTC, changeTaskTitleTC, removeTaskTC } from "@/features/todolists/model/tasks-slice.ts"
 import { ChangeEvent } from "react"
-import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { getListItemSx } from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/TaskItem/TaskItem.styles.ts"
 import { TaskStatus } from "@/common/enums/enums.ts"
 import { DomainTask } from "@/features/todolists/api/tasksApi.types.ts"
 import { DomainTodolists } from "@/features/todolists/model/todolists-slice.ts"
+import {
+  useChangeTaskTitleMutation,
+  useDeleteTaskMutation,
+  useUpdateTaskMutation,
+} from "@/features/todolists/api/tasksApi.ts"
+import { createTaskModel } from "@/features/auth/lib/utils/createTaskModel.ts"
 
 type Props = {
   task: DomainTask
@@ -15,19 +19,23 @@ type Props = {
 }
 
 export const TaskItem = ({ task, todolist }: Props) => {
-  const dispatch = useAppDispatch()
+  const [removeTask] = useDeleteTaskMutation()
+  const [updateTask] = useUpdateTaskMutation()
+  const [updateTaskTitle] = useChangeTaskTitleMutation()
 
   const deleteTaskHandler = () => {
-    dispatch(removeTaskTC({ taskId: task.id, todolistId: todolist.id }))
+    removeTask({ taskId: task.id, todolistId: todolist.id })
   }
 
   const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const newStatus = e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New
-    dispatch(changeTaskStatusTC({ taskId: task.id, status: newStatus, todolistId: todolist.id }))
+    const status = e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New
+    const model = createTaskModel(task, { status })
+    updateTask({ taskId: task.id, model, todolistId: todolist.id })
   }
 
   const onChangeTitleHandler = (title: string) => {
-    dispatch(changeTaskTitleTC({ taskId: task.id, domainModel: { title }, todolistId: todolist.id }))
+    const model = createTaskModel(task, { title })
+    updateTaskTitle({ taskId: task.id, model, todolistId: todolist.id })
   }
 
   return (
