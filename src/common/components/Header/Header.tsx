@@ -1,12 +1,12 @@
-import { AppBar, Box, Container, IconButton, LinearProgress, Switch, Toolbar, Typography } from "@mui/material"
+import { AppBar, Box, Container, IconButton, LinearProgress, Switch, Toolbar } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
 import { NavButton } from "@/common/components/NavButton/NavButton.ts"
 import { useAppSelector } from "@/common/hooks/useAppSelector.ts"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { getTheme } from "@/common/theme/theme.ts"
-import { changeThemeModeAC, selectStatus, selectThemeMode } from "@/app/app-slice.ts"
+import { changeThemeModeAC, selectIsLoggedIn, selectStatus, selectThemeMode, setIsLoggedInAC } from "@/app/app-slice.ts"
 import { containerSx } from "@/common/styles/container.styles.ts"
-import { selectIsLoggedIn, selectUser, setIsLoggedInAC } from "@/features/auth/model/auth-slice.ts"
+
 import { useLogoutMutation } from "@/features/auth/api/authApi.ts"
 import { ResultCode } from "@/common/enums/enums.ts"
 import { AUTH_TOKEN } from "@/common/constants"
@@ -18,7 +18,6 @@ export const Header = () => {
   const theme = getTheme(themeMode)
   const status = useAppSelector(selectStatus)
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
-  const user = useAppSelector(selectUser)
 
   const [logout] = useLogoutMutation()
 
@@ -48,7 +47,7 @@ export const Header = () => {
             <MenuIcon />
           </IconButton>
           <Box display="flex" alignItems="center" gap={2} mr={2}>
-            {user && <Typography variant="body1">Hello, {user.login}</Typography>}
+            {/*{user && <Typography variant="body1">Hello, {user.login}</Typography>}*/}
             {isLoggedIn && <NavButton onClick={logoutHandler}>Sign out</NavButton>}
             <NavButton background={theme.palette.primary.dark}>Faq</NavButton>
             <Switch color={"default"} onChange={changeMode} />

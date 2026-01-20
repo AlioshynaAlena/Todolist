@@ -2,7 +2,7 @@ import "./App.css"
 import { CircularProgress, CssBaseline, ThemeProvider } from "@mui/material"
 import { useAppSelector } from "../common/hooks/useAppSelector.ts"
 import { getTheme } from "@/common/theme/theme.ts"
-import { selectThemeMode } from "@/app/app-slice.ts"
+import { selectThemeMode, setIsLoggedInAC } from "@/app/app-slice.ts"
 import { ErrorSnackbar, Header } from "@/common/components"
 import { Routing } from "@/common/routing/Routing.tsx"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
@@ -10,7 +10,6 @@ import { useEffect, useState } from "react"
 import styles from "../app/App.module.css"
 import { ResultCode } from "@/common/enums/enums.ts"
 import { useMeQuery } from "@/features/auth/api/authApi.ts"
-import { setIsLoggedInAC } from "@/features/auth/model/auth-slice.ts"
 
 function App() {
   const themeMode = useAppSelector(selectThemeMode)

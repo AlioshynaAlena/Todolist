@@ -3,10 +3,10 @@ import { CreateItemForm } from "@/common/components/CreateItemForm/CreateItemFor
 import { Container } from "@mui/material"
 import { Todolists } from "@/features/todolists/ui/Todolists/Todolists.tsx"
 import { useAppSelector } from "@/common/hooks/useAppSelector.ts"
-import { selectIsLoggedIn } from "@/features/auth/model/auth-slice.ts"
 import { Navigate } from "react-router"
 import { Path } from "@/common/routing/Routing.tsx"
 import { useCreateTodolistMutation } from "@/features/todolists/api/todolistsApi.ts"
+import { selectIsLoggedIn } from "@/app/app-slice.ts"
 
 export const Main = () => {
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
