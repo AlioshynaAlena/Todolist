@@ -1,4 +1,4 @@
-import type { Todolist } from "./todolistsApi.types"
+import type { Todolist } from "./todolistsApi.types.ts"
 import { BaseResponse } from "@/common/types"
 import { DomainTodolists } from "@/features/todolists/model/todolists-slice.ts"
 import { baseApi } from "@/app/baseApi.ts"
