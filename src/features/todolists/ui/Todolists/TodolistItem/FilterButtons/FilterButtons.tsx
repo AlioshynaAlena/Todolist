@@ -1,9 +1,10 @@
 import { Box } from "@mui/material"
 import { ButtonClick } from "@/common/components/NavButton/ButtonClick.tsx"
 import { FilterValuesType } from "@/features/todolists/model/__tests__/todolists-reducer.test.ts"
-import { changeTodolistFilterAC, DomainTodolists } from "@/features/todolists/model/todolists-slice.ts"
+import { DomainTodolists } from "@/features/todolists/model/todolists-slice.ts"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
 import { containerSx } from "@/common/styles/container.styles.ts"
+import { todolistsApi } from "@/features/todolists/api/todolistsApi.ts"
 
 type Props = {
   todolist: DomainTodolists
@@ -14,7 +15,12 @@ export const FilterButtons = ({ todolist }: Props) => {
   const dispatch = useAppDispatch()
 
   const changeFilterHandler = (filter: FilterValuesType) => {
-    dispatch(changeTodolistFilterAC({ filter: filter, id: id })) //передаем
+    dispatch(
+      todolistsApi.util.updateQueryData("getTodolists", undefined, (todolists) => {
+        const index = todolists.findIndex((todo) => todo.id === id)
+        if (index !== -1) todolists[index].filter = filter
+      }),
+    )
   }
   return (
     <Box sx={containerSx}>
