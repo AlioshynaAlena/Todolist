@@ -1,7 +1,7 @@
 {
   "name": "todolist-01",
   "private": true,
-  "homepage": "https://AlioshynaAlena.github.io/Todolist",
+  "homepage": ".",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
