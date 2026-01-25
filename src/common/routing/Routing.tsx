@@ -18,21 +18,19 @@ export const Routing = () => {
 
   return (
     <Routes>
+      <Route path={Path.Main} element={<Main />} />
       <Route element={<ProtectedRoute isAllowed={isLoggedIn} />}>
-        <Route path={Path.Main} element={<Main />} />
         <Route path={Path.Faq} element={<h2>Faq</h2>} />
       </Route>
 
-      <Route element={<ProtectedRoute isAllowed={!isLoggedIn} redirectPath={Path.Main} />}>
-        <Route
-          path={Path.Login}
-          element={
-            <ProtectedRoute isAllowed={!isLoggedIn}>
-              <Login />
-            </ProtectedRoute>
-          }
-        />
-      </Route>
+      <Route
+        path={Path.Login}
+        element={
+          <ProtectedRoute isAllowed={!isLoggedIn}>
+            <Login />
+          </ProtectedRoute>
+        }
+      />
 
       <Route path={Path.NotFound} element={<PageNotFound />} />
     </Routes>
