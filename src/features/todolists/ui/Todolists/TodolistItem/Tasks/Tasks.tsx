@@ -4,6 +4,8 @@ import { TaskStatus } from "@/common/enums/enums.ts"
 import { DomainTodolists } from "@/features/todolists/model/todolists-slice.ts"
 import { useGetTasksQuery } from "@/features/todolists/api/tasksApi.ts"
 import { TasksSkeleton } from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/TasksSkeleton/TasksSkeleton.tsx"
+import { useState } from "react"
+import { TasksPagination } from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/TasksPagination/TasksPagination.tsx"
 
 type Props = {
   todolist: DomainTodolists
@@ -12,7 +14,9 @@ type Props = {
 export const Tasks = ({ todolist }: Props) => {
   const { id, filter } = todolist
 
-  const { data, isLoading } = useGetTasksQuery(id)
+  const [page, setPage] = useState(1)
+
+  const { data, isLoading } = useGetTasksQuery({ todolistId: id, params: { page } })
 
   if (isLoading) {
     return <TasksSkeleton />
@@ -37,6 +41,7 @@ export const Tasks = ({ todolist }: Props) => {
           ))}
         </List>
       )}
+      <TasksPagination totalCount={data?.totalCount || 0} page={page} setPage={setPage} />
     </>
   )
 }

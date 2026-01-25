@@ -5,7 +5,10 @@ import { TodolistSkeleton } from "./TodolistSkeleton/TodolistSkeleton"
 import { containerSx } from "@/common/styles/container.styles"
 
 export const Todolists = () => {
-  const { data: todolists, isLoading } = useGetTodolistsQuery()
+  const { data: todolists, isLoading } = useGetTodolistsQuery(undefined, {
+    pollingInterval: 3000,
+    skipPollingIfUnfocused: true,
+  })
 
   if (isLoading) {
     return (
