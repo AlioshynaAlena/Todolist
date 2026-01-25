@@ -11,6 +11,15 @@ type Props = {
 }
 
 export const TasksPagination = ({ totalCount, page, setPage }: Props) => {
+  const shouldShowPagination = totalCount > PAGE_SIZE
+
+  if (!shouldShowPagination) {
+    return (
+      <div className={styles.totalCount}>
+        <Typography variant="caption">Total: {totalCount}</Typography>
+      </div>
+    )
+  }
   const changePage = (_: ChangeEvent<unknown>, page: number) => {
     setPage(page)
   }
