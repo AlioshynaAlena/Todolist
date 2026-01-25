@@ -1,5 +1,4 @@
 import { AppBar, Box, Container, IconButton, LinearProgress, Switch, Toolbar } from "@mui/material"
-import MenuIcon from "@mui/icons-material/Menu"
 import { NavButton } from "@/common/components/NavButton/NavButton.ts"
 import { useAppSelector } from "@/common/hooks/useAppSelector.ts"
 import { useAppDispatch } from "@/common/hooks/useAppDispatch.ts"
@@ -43,9 +42,7 @@ export const Header = () => {
     <AppBar position="static" sx={{ mb: "30px" }}>
       <Toolbar>
         <Container maxWidth={"lg"} sx={containerSx}>
-          <IconButton color="inherit">
-            <MenuIcon />
-          </IconButton>
+          <IconButton color="inherit"></IconButton>
           <Box display="flex" alignItems="center" gap={2} mr={2}>
             {/*{user && <Typography variant="body1">Hello, {user.login}</Typography>}*/}
             {isLoggedIn && <NavButton onClick={logoutHandler}>Sign out</NavButton>}
